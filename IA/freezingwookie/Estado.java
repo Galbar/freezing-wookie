@@ -50,6 +50,13 @@ class Estado {
 	}
 
 	/**
+	* Mejora la solucion actual
+	*/
+	public void mejora() {
+		// TODO: implementar el heuristic
+	}
+
+	/**
 	* Imprimir estado
 	*/
 	public void pintaEstado() {
@@ -105,5 +112,13 @@ class Estado {
 		Random rand = new Random();
 		cs = new Centros(nc,nh,rand.nextInt());
 		gs = new Grupos(ng,rand.nextInt());
+
+		Estado e = new Estado(ng);
+
+		e.primeraSol();
+
+		e.mejora();
+
+		e.pintaEstado();
 	}
 }
