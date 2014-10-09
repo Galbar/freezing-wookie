@@ -1,2 +1,2 @@
 all:
-	echo "Do something"
+	javac -classpath dist/Desastres.jar src/Main.java
