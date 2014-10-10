@@ -3,13 +3,13 @@ CC        = javac
 IDIR      = src:dist/Desastres.jar
 SDIR      = src/freezingwookie
 ODIR      = src/freezingwookie
-CFLAGS    = -classpath $(IDIR)
+CFLAGS    = -classpath $(IDIR) -Xlint
 LIBS      = 
 
 EXEC      = freezingwookie.ControladorEstado
 
 MAIN      = ControladorEstado
-CLASSES   = Estado
+CLASSES   = Estado Helicoptero
 
 OBJ       = $(patsubst %, $(ODIR)/%.class,$(MAIN)) $(patsubst %, $(ODIR)/%.class,$(CLASSES))
 

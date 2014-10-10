@@ -7,14 +7,19 @@ import java.lang.Integer;
 
 public class Estado implements Cloneable {
 	/**
-	* Lista de grupos asignados a los centros
+	* Lista de grupos asignados a los helicopteros
 	*/
 	private int[] plan;
 
 	/**
 	* Coste del estado actual
 	*/
-	private int coste;
+	private int costeTotal;
+
+	/**
+	 * Coste hasta recoger el último grupo de prioridad 1
+	 */
+	private int costeP1;
 
 	/**
 	* Centros de emerengia/rescate
@@ -32,7 +37,8 @@ public class Estado implements Cloneable {
 	public Estado(Centros c, Grupos g) {
 		centros = c;
 		grupos = g;
-		coste = 0;
+		costeTotal = 0;
+		costeP1 = 0;
 		plan = new int[g.size()];
 	}
 
@@ -42,15 +48,18 @@ public class Estado implements Cloneable {
 	public Estado clone() {
 		Estado e = new Estado(centros, grupos);
 		e.plan = plan;
-		e.coste = coste;
+		e.costeTotal = costeTotal;
+		e.costeP1 = costeP1;
+		e.helicopteros = helicopteros;
 		return e;
 	}
 
 	/**
 	* Asigna un grupo a un centro
 	*/
-	public void asignar(int g, int c) {
-		// TODO: implementar void asignar(int g, int c)
+	public void asignar(int g, int h) {
+		plan[g] = h;
+		//coste += 
 	} 
 
 	/**
