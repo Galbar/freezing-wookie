@@ -7,7 +7,7 @@ import java.lang.Integer;
 
 public class Estado {
 	/**
-	* Lista de grupos asignados a los helicopteros
+	* Lista de grupos asignados a los centros
 	*/
 	private int[] plan;
 
@@ -17,75 +17,69 @@ public class Estado {
 	private int coste;
 
 	/**
-	* Centros de helicopteros
+	* Centros de emerengia/rescate
 	*/
-	Centros cs;
+	Centros centros;
 
 	/**
 	* Grupos a rescatar
 	*/
-	Grupos gs;
-
-	/**
-	* Numero de centros
-	*/
-	int nc;
-
-	/**
-	* Numero de helicopteros
-	*/
-	int nh;
-
-	/**
-	* Numero de grupos
-	*/
-	int ng;
+	Grupos grupos;
 
 	/**
 	* Constructor
 	*/
-	public Estado() {
+	public Estado(Centros centros, Grupos grupos) {
 		Console console = System.console();
-		int[] ret = new int[3];
-		nc = Integer.parseInt(console.readLine("Introduce el nº centros:"));
-		nh = Integer.parseInt(console.readLine("Introduce el nº helicopteros:"));
-		ng = Integer.parseInt(console.readLine("Introduce el nº grupos:"));
+		this.centros = centros;
+		this.grupos = grupos;
 		coste = 0;
 		plan = new int[ng];
 	}
 
 	/**
-	* Asigna un helicoptero a un grupos
+	* Asigna un grupo a un centro
 	*/
-	public void asignar(int g, int h) {
-		// TODO: implement
+	public void asignar(int g, int c) {
+		// TODO: implementar void asignar(int g, int c)
 	} 
 
 	/**
-	* Intercambia los helicopteros de dos grupos
+	* Intercambia los centros asignados a dos grupos
 	*/
 	public void intercambia(int g1, int g2) {
-		// TODO: implement
+		// TODO: implementar void intercambia(int g1, int g2)
+	}
+
+	/**
+	 * @brief Desasignar un grupo de un centro
+	 * @details Desasigna un grupo de un centro y actualiza costes
+	 * 
+	 * @param g ID grupo
+	 * @param c ID centro
+	 */
+	public void borrar(int g, int c) {
+		// TODO: implementar void borrar(int g, int c)
 	}
 
 	/**
 	* Calcula una primera solucion con una distribucion no optima
 	*/
 	public void primeraSol() {
-		// TODO: implement
+		// TODO: implementar void primeraSol()
 	}
 
 	/**
 	* Mejora la solucion actual
 	*/
 	public void mejora() {
-		// TODO: implement
+		// TODO: implementar void mejora()
 	}
 
 	/**
 	* Imprimir estado
 	*/
 	public void pintaEstado() {
-		// TODO: implement
+		// TODO: implementar void pintaEstado()
 	}
 }
