@@ -5,7 +5,7 @@ import java.util.Random;
 import java.io.Console;
 import java.lang.Integer;
 
-public class Estado {
+public class Estado implements Cloneable {
 	/**
 	* Lista de grupos asignados a los centros
 	*/
