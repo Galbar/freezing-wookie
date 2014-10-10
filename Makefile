@@ -1,7 +1,10 @@
-all:
-	javac -classpath dist/Desastres.jar IA/freezingwookie/Estado.java
+all: src/freezingwookie/*.java
+	javac -classpath "src:dist/Desastres.jar" src/freezingwookie/ControladorEstado.java
 
-.PHONY: run
+.PHONY: run clean
 
 run: all
-	java -cp .:dist/Desastres.jar IA.freezingwookie.Estado
+	java -cp src:dist/Desastres.jar freezingwookie.ControladorEstado
+
+clean:
+	rm src/freezingwookie/*.class

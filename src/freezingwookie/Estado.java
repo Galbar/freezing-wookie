@@ -1,11 +1,11 @@
-package  IA.freezingwookie;
+package freezingwookie;
 
 import IA.Desastres.*;
 import java.util.Random;
 import java.io.Console;
 import java.lang.Integer;
 
-class Estado {
+public class Estado {
 	/**
 	* Lista de grupos asignados a los helicopteros
 	*/
@@ -87,22 +87,5 @@ class Estado {
 	*/
 	public void pintaEstado() {
 		// TODO: implement
-	}
-}
-
-class ControladorEstado {
-
-	/**
-	* Main
-	*/
-	public static void main(String[] args) {
-
-		Estado e = new Estado();
-
-		e.primeraSol();
-
-		e.mejora();
-
-		e.pintaEstado();
 	}
 }
