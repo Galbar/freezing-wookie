@@ -33,7 +33,7 @@ public class Estado implements Cloneable {
 		centros = c;
 		grupos = g;
 		coste = 0;
-		plan = new int[ng];
+		plan = new int[g.size()];
 	}
 
 	/**
