@@ -29,12 +29,21 @@ public class Estado {
 	/**
 	* Constructor
 	*/
-	public Estado(Centros centros, Grupos grupos) {
-		Console console = System.console();
-		this.centros = centros;
-		this.grupos = grupos;
+	public Estado(Centros c, Grupos g) {
+		centros = c;
+		grupos = g;
 		coste = 0;
 		plan = new int[ng];
+	}
+
+	/**
+	* Devuelve un nuevo Estado copia de este
+	*/
+	public Estado clone() {
+		Estado e = new Estado(centros, grupos);
+		e.plan = plan;
+		e.coste = coste;
+		return e;
 	}
 
 	/**
