@@ -1,15 +1,18 @@
 package freezingwookie;
 
 import IA.Desastres.*;
-import java.util.Random;
-import java.io.Console;
-import java.lang.Integer;
+import java.lang.System;
 
 public class Estado implements Cloneable {
 	/**
 	* Lista de grupos asignados a los centros
 	*/
 	private int[] plan;
+
+	/**
+	 * Lista de referencias a centros. Cada posición representa un helicoptero
+	 */
+	private int[] helicopteros;
 
 	/**
 	* Coste del estado actual
@@ -34,6 +37,17 @@ public class Estado implements Cloneable {
 		grupos = g;
 		coste = 0;
 		plan = new int[g.size()];
+		int sum = 0;
+		for (int i = 0; i < c.size(); i++) {
+			sum += c.get(i).getNHelicopteros();
+		}
+
+		helicopteros = new int[sum];
+		for (int i = 0; i < c.size(); i++) {
+			for (int j = 0; j < c.get(i).getNHelicopteros(); j++) {
+				helicopteros[i*c.size()+j] = i;
+			}
+		}
 	}
 
 	/**
