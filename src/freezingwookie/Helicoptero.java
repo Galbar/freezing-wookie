@@ -5,6 +5,15 @@ import java.lang.Integer;
 
 class Viaje {
 	private ArrayList<Integer> p;
+
+	public int size() {
+		return p.size();
+	}
+
+	public int get(int i) {
+		return p.get(i);
+	}
+	
 	public void swap(int i, int j) {
 		Integer tmp = p.get(i);
 		p.set(i, p.get(j));
@@ -91,7 +100,7 @@ public class Helicoptero implements Cloneable {
 
 	public ArrayList<Integer> getGruposViaje(int v) {
 		ArrayList<Integer> a = new ArrayList<Integer>();
-		ArrayList<Integer> viaje = viajes.get(v);
+		Viaje viaje = viajes.get(v);
 		for (int i = 0; i < viaje.size(); ++i) {
 			int p = viaje.get(i);
 			a.add(gruposAsignados.get(p));

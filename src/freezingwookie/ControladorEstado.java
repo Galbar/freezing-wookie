@@ -22,12 +22,15 @@ public class ControladorEstado {
 		seed = Integer.parseInt(console.readLine("Introduce el random seed:"));
 		Grupos gs = new Grupos(nh,seed);
 
-		Estado e = new Estado(cs,gs);
+		System.out.println("Escoja el método de generación de la solución inicial:");
+		System.out.println("  0. Distribuido\n  1. Aleatorio");
+		int initOpt = Integer.parseInt(console.readLine(">"));
+		initOpt %= 2;
 
-		e.primeraSol();
+		Estado e = new Estado(cs,gs, initOpt);
 
-		e.mejora();
-
-		e.pintaEstado();
+		System.out.println("Escoja el tipo de solucionador que desea aplicar:");
+		System.out.println("  0. Hill climbing\n  1. Simulated annealing");
+		String st = console.readLine(">");
 	}
 }

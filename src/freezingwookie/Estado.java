@@ -1,21 +1,14 @@
 package freezingwookie;
 
 import IA.Desastres.*;
-import java.util.Random;
-import java.io.Console;
 import java.lang.Integer;
 import java.util.ArrayList;
 
-public class Estado implements Cloneable {
+public class Estado {
 	/**
 	* Lista de grupos asignados a los helicopteros
 	*/
 	private int[] plan;
-
-	/**
-	 * Lista de referencias a centros. Cada posición representa un helicoptero
-	 */
-	private int[] helicopteros;
 
 	/**
 	* Coste del estado actual
@@ -50,13 +43,13 @@ public class Estado implements Cloneable {
 	/**
 	* Constructor
 	*/
-	public Estado(Centros c, Grupos g) {
+	public Estado(Centros c, Grupos g, int solIni) {
 		centros = c;
 		grupos = g;
 		costeTotal = 0;
 		costeP1 = 0;
 		plan = new int[g.size()];
-		
+
 		helicopteros = new ArrayList<Helicoptero>();
 		helicopterosCentros = new ArrayList<Integer>();
 		int ini = 0;
@@ -68,18 +61,24 @@ public class Estado implements Cloneable {
 				++ini;
 			}
 		}
+		//if (solIni == 0)
+		//	SolucionInicial.distribuido(this);
+		//else
+		//	SolucionInicial.random(this);
 	}
 
 	/**
-	* Devuelve un nuevo Estado copia de este
-	*/
-	public Estado clone() {
-		Estado e = new Estado(centros, grupos);
-		e.plan = plan;
-		e.costeTotal = costeTotal;
-		e.costeP1 = costeP1;
-		e.helicopteros = helicopteros;
-		return e;
+	 * Constructor de copia
+	 * @param  e estado origen
+	 */
+	public Estado(Estado e) {
+		centros = e.centros;
+		grupos = e.grupos;
+		plan = e.plan;
+		costeTotal = e.costeTotal;
+		costeP1 = e.costeP1;
+		helicopteros = e.helicopteros;
+		helicopterosCentros = e.helicopterosCentros;
 	}
 
 	/**
@@ -106,20 +105,6 @@ public class Estado implements Cloneable {
 	 */
 	public void borrar(int g, int c) {
 		// TODO: implementar void borrar(int g, int c)
-	}
-
-	/**
-	* Calcula una primera solucion con una distribucion no optima
-	*/
-	public void primeraSol() {
-		// TODO: implementar void primeraSol()
-	}
-
-	/**
-	* Mejora la solucion actual
-	*/
-	public void mejora() {
-		// TODO: implementar void mejora()
 	}
 
 	/**

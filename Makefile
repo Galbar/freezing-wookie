@@ -4,7 +4,7 @@ IDIR      = src:dist/Desastres.jar
 SDIR      = src/freezingwookie
 ODIR      = src/freezingwookie
 CFLAGS    = -classpath $(IDIR) -Xlint
-LIBS      = 
+XFLAGS    = -jar dist/AIMA.jar -cp $(IDIR)
 
 EXEC      = freezingwookie.ControladorEstado
 
@@ -21,7 +21,7 @@ $(ODIR)/%.class: $(SDIR)/%.java
 .PHONY: run clean
 
 run: all
-	java -cp $(IDIR) $(EXEC)
+	java $(XFLAGS) $(EXEC)
 
 clean:
 	rm src/freezingwookie/*.class
