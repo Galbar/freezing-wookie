@@ -1,11 +1,14 @@
 package freezingwookie;
 
 import IA.Desastres.*;
-import java.lang.System;
+import java.util.Random;
+import java.io.Console;
+import java.lang.Integer;
+import java.util.ArrayList;
 
 public class Estado implements Cloneable {
 	/**
-	* Lista de grupos asignados a los centros
+	* Lista de grupos asignados a los helicopteros
 	*/
 	private int[] plan;
 
@@ -17,17 +20,32 @@ public class Estado implements Cloneable {
 	/**
 	* Coste del estado actual
 	*/
-	private int coste;
+	private int costeTotal;
+
+	/**
+	 * Coste hasta recoger el último grupo de prioridad 1
+	 */
+	private int costeP1;
 
 	/**
 	* Centros de emerengia/rescate
 	*/
-	Centros centros;
+	private Centros centros;
 
 	/**
 	* Grupos a rescatar
 	*/
-	Grupos grupos;
+	private Grupos grupos;
+
+	/**
+	 * Estructura contenedora de helicópteros
+	 */
+	private ArrayList<Helicoptero> helicopteros;
+	/**
+	 * Estructura que indica dónde empiezan y terminan los helicópteros de cada
+	 * centro en helicopteros
+	 */
+	private ArrayList<Integer> helicopterosCentros;
 
 	/**
 	* Constructor
@@ -35,17 +53,19 @@ public class Estado implements Cloneable {
 	public Estado(Centros c, Grupos g) {
 		centros = c;
 		grupos = g;
-		coste = 0;
+		costeTotal = 0;
+		costeP1 = 0;
 		plan = new int[g.size()];
-		int sum = 0;
-		for (int i = 0; i < c.size(); i++) {
-			sum += c.get(i).getNHelicopteros();
-		}
-
-		helicopteros = new int[sum];
-		for (int i = 0; i < c.size(); i++) {
-			for (int j = 0; j < c.get(i).getNHelicopteros(); j++) {
-				helicopteros[i*c.size()+j] = i;
+		
+		helicopteros = new ArrayList<Helicoptero>();
+		helicopterosCentros = new ArrayList<Integer>();
+		int ini = 0;
+		for (int i = 0; i < centros.size(); ++i) {
+			helicopterosCentros.add(ini);
+			Centro centro = centros.get(i);
+			for (int j = 0; j < centro.getNHelicopteros(); ++j) {
+				helicopteros.add(new Helicoptero());
+				++ini;
 			}
 		}
 	}
@@ -56,15 +76,18 @@ public class Estado implements Cloneable {
 	public Estado clone() {
 		Estado e = new Estado(centros, grupos);
 		e.plan = plan;
-		e.coste = coste;
+		e.costeTotal = costeTotal;
+		e.costeP1 = costeP1;
+		e.helicopteros = helicopteros;
 		return e;
 	}
 
 	/**
 	* Asigna un grupo a un centro
 	*/
-	public void asignar(int g, int c) {
-		// TODO: implementar void asignar(int g, int c)
+	public void asignar(int g, int h) {
+		plan[g] = h;
+		//coste += 
 	} 
 
 	/**
