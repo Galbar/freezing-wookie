@@ -3,12 +3,26 @@ package freezingwookie;
 import java.util.ArrayList;
 import java.lang.Integer;
 
-class Viaje {
+class Viaje implements Cloneable{
 	private ArrayList<Integer> p;
+
+	public Viaje() {
+		p = new ArrayList<Integer>();
+	}
+
+	public void add(int i) {
+		p.add(new Integer(i));
+	}
 
 	public int size() {
 		return p.size();
 	}
+
+	public Viaje clone() {
+		Viaje v = new Viaje();
+		v.p = new ArrayList<Integer>(p);
+		return v;
+	} 
 
 	public int get(int i) {
 		return p.get(i);
@@ -24,6 +38,7 @@ class Viaje {
 public class Helicoptero implements Cloneable {
 	private ArrayList<Integer> gruposAsignados;
 	private ArrayList<Viaje> viajes;
+	private ArrayList<Integer> gruposViajes;
 
 	/**
 	 * Constructora
@@ -31,6 +46,17 @@ public class Helicoptero implements Cloneable {
 	public Helicoptero() {
 		gruposAsignados = new ArrayList<Integer>();
 		viajes = new ArrayList<Viaje>();
+		gruposViajes = new ArrayList<Integer>();
+	}
+
+	public Helicoptero clone() {
+		Helicoptero h = new Helicoptero();
+		h.gruposAsignados = new ArrayList<Integer>(gruposAsignados);
+		for (int i = 0; i < viajes.size(); ++i) {
+			h.viajes.add(viajes.get(i).clone());
+		}
+		h.gruposViajes = new ArrayList<Integer>(gruposViajes);
+		return h;
 	}
 
 	/**
@@ -39,6 +65,7 @@ public class Helicoptero implements Cloneable {
 	 */
 	public void asignarGrupo(int g) {
 		gruposAsignados.add(g);
+		// TODO: actualizar gruposViajes y viajes
 	}
 
 	/**
@@ -48,6 +75,7 @@ public class Helicoptero implements Cloneable {
 	 */
 	public void asignarGrupo(int g, int p) {
 		gruposAsignados.set(p, g);
+		// TODO: actualizar gruposViajes y viajes
 	}
 
 	/**
@@ -66,7 +94,7 @@ public class Helicoptero implements Cloneable {
 	 * @param p1 posición del grupo en this.gruposAsignados
 	 * @param p2 posición del grupo en h.gruposAsignados
 	 */
-	public void intercambiarGrupos(Helicoptero h, int p1, int p2) {
+	public void intercambiarGrupos(int p1, Helicoptero h, int p2) {
 		int g1 = gruposAsignados.get(p1);
 		int g2 = h.gruposAsignados.get(p2);
 		gruposAsignados.set(p1, g2);

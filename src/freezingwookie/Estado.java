@@ -11,16 +11,6 @@ public class Estado {
 	private int[] plan;
 
 	/**
-	* Coste del estado actual
-	*/
-	private int costeTotal;
-
-	/**
-	 * Coste hasta recoger el último grupo de prioridad 1
-	 */
-	private int costeP1;
-
-	/**
 	* Centros de emerengia/rescate
 	*/
 	private Centros centros;
@@ -46,8 +36,6 @@ public class Estado {
 	public Estado(Centros c, Grupos g, int solIni) {
 		centros = c;
 		grupos = g;
-		costeTotal = 0;
-		costeP1 = 0;
 		plan = new int[g.size()];
 
 		helicopteros = new ArrayList<Helicoptero>();
@@ -74,43 +62,55 @@ public class Estado {
 	public Estado(Estado e) {
 		centros = e.centros;
 		grupos = e.grupos;
-		plan = e.plan;
-		costeTotal = e.costeTotal;
-		costeP1 = e.costeP1;
-		helicopteros = e.helicopteros;
+		plan = e.plan.clone();
+		helicopteros = new ArrayList<Helicoptero>(e.helicopteros);
 		helicopterosCentros = e.helicopterosCentros;
 	}
 
 	/**
-	* Asigna un grupo a un centro
-	*/
-	public void asignar(int g, int h) {
-		plan[g] = h;
-		//coste += 
-	} 
-
-	/**
-	* Intercambia los centros asignados a dos grupos
-	*/
-	public void intercambia(int g1, int g2) {
-		// TODO: implementar void intercambia(int g1, int g2)
-	}
-
-	/**
-	 * @brief Desasignar un grupo de un centro
-	 * @details Desasigna un grupo de un centro y actualiza costes
-	 * 
-	 * @param g ID grupo
-	 * @param c ID centro
+	 * Devuelve el numero de helicopteros
+	 * @return número de helicopteros
 	 */
-	public void borrar(int g, int c) {
-		// TODO: implementar void borrar(int g, int c)
+	public int getNHelicopteros() {
+		return helicopteros.size();
 	}
 
 	/**
-	* Imprimir estado
-	*/
-	public void pintaEstado() {
-		// TODO: implementar void pintaEstado()
+	 * Devuelve el helicoptero iessimo del estado
+	 * @param  identificador del helicoptero
+	 * @return helicoptero iessimo
+	 */
+	public Helicoptero getHelicoptero(int i) {
+		return helicopteros.get(i);
+	}
+
+	/**
+	 * Devuelve un clon del helicoptero iessimo del estado
+	 * @param  identificador del helicoptero
+	 * @return clon del helicoptero iessimo
+	 */
+	public Helicoptero getCopiaHelicoptero(int i) {
+		return helicopteros.get(i).clone();
+	}
+
+	/**
+	 * Asigna un helicoptero
+	 * @param posicion de la asignacion
+	 * @param helicoptero
+	 */
+	public void asignarHelicoptero(int i, Helicoptero h) {
+		helicopteros.set(i, h);
+	}
+
+	public boolean intercambioPosible(int h1, int p1, int h2, int p2) {
+		int p = helicopteros.get(h1).getGrupo(p1);
+		int cost1 = grupos.get(p).getNPersonas();
+
+
+		p = helicopteros.get(h2).getGrupo(p2);
+		int cost2 = grupos.get(p).getNPersonas();
+
+		// TODO finish this shit *estructura de grupViatges
+		return false;
 	}
 }
