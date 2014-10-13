@@ -21,7 +21,7 @@ $(ODIR)/%.class: $(SDIR)/%.java
 .PHONY: run clean
 
 run: all
-	java -cp src:dist/Desastres.jar freezingwookie.ControladorEstado
+	java -cp $(IDIR) $(EXEC)
 
 clean:
 	rm src/freezingwookie/*.class

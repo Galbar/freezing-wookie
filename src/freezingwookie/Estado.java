@@ -4,6 +4,7 @@ import IA.Desastres.*;
 import java.util.Random;
 import java.io.Console;
 import java.lang.Integer;
+import java.util.ArrayList;
 
 public class Estado implements Cloneable {
 	/**
@@ -24,12 +25,22 @@ public class Estado implements Cloneable {
 	/**
 	* Centros de emerengia/rescate
 	*/
-	Centros centros;
+	private Centros centros;
 
 	/**
 	* Grupos a rescatar
 	*/
-	Grupos grupos;
+	private Grupos grupos;
+
+	/**
+	 * Estructura contenedora de helicópteros
+	 */
+	private ArrayList<Helicoptero> helicopteros;
+	/**
+	 * Estructura que indica dónde empiezan y terminan los helicópteros de cada
+	 * centro en helicopteros
+	 */
+	private ArrayList<Integer> helicopterosCentros;
 
 	/**
 	* Constructor
@@ -40,6 +51,18 @@ public class Estado implements Cloneable {
 		costeTotal = 0;
 		costeP1 = 0;
 		plan = new int[g.size()];
+		
+		helicopteros = new ArrayList<Helicoptero>();
+		helicopterosCentros = new ArrayList<Integer>();
+		int ini = 0;
+		for (int i = 0; i < centros.size(); ++i) {
+			helicopterosCentros.add(ini);
+			Centro centro = centros.get(i);
+			for (int j = 0; j < centro.getNHelicopteros(); ++j) {
+				helicopteros.add(new Helicoptero());
+				++ini;
+			}
+		}
 	}
 
 	/**

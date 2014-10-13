@@ -52,11 +52,51 @@ public class Helicoptero implements Cloneable {
 	}
 
 	/**
+	 * Intercambia los grupos en posición p1 de this.gruposAsignados y p2 de h.gruposAsignados
+	 * @param h  helicóptero con quien intercambiar
+	 * @param p1 posición del grupo en this.gruposAsignados
+	 * @param p2 posición del grupo en h.gruposAsignados
+	 */
+	public void intercambiarGrupos(Helicoptero h, int p1, int p2) {
+		int g1 = gruposAsignados.get(p1);
+		int g2 = h.gruposAsignados.get(p2);
+		gruposAsignados.set(p1, g2);
+		h.gruposAsignados.set(p2, g1);
+	}
+
+	/**
 	 * Devuelve el número de grupos que tiene asignado el helicóptero
 	 * @return Número de grupos asignados
 	 */
 	public int getNGrupos() {
 		return gruposAsignados.size();
+	}
+
+	/**
+	 * Devuelve el número de viajes que tiene asignado el helicóptero
+	 * @return Número de viajes asignados
+	 */
+	public int getNViajes() {
+		return viajes.size();
+	}
+
+	/**
+	 * Devuelve el numero de grupos que el helicóptero visita en el viaje <em>v</em>
+	 * @param  v identificador de viaje
+	 * @return   numero de grupos en el viaje
+	 */
+	public int getNGruposViaje(int v) {
+		return viajes.get(v).size();
+	}
+
+	public ArrayList<Integer> getGruposViaje(int v) {
+		ArrayList<Integer> a = new ArrayList<Integer>();
+		ArrayList<Integer> viaje = viajes.get(v);
+		for (int i = 0; i < viaje.size(); ++i) {
+			int p = viaje.get(i);
+			a.add(gruposAsignados.get(p));
+		}
+		return a;
 	}
 
 }
