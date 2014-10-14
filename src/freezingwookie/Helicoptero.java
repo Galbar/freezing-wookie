@@ -5,13 +5,16 @@ import java.lang.Integer;
 
 class Viaje implements Cloneable{
 	private ArrayList<Integer> p;
+	private int s;
 
 	public Viaje() {
 		p = new ArrayList<Integer>();
+		s = 0;
 	}
 
-	public void add(int i) {
+	public void add(int i, int s) {
 		p.add(new Integer(i));
+		this.s += s;
 	}
 
 	public int size() {
@@ -26,6 +29,10 @@ class Viaje implements Cloneable{
 
 	public int get(int i) {
 		return p.get(i);
+	}
+
+	public getNPersonas() {
+		return s;
 	}
 	
 	public void swap(int i, int j) {
@@ -63,9 +70,14 @@ public class Helicoptero implements Cloneable {
 	 * Añade un nuevo grupo a los grupos asignados del helicóptero
 	 * @param g ID grupo asignado
 	 */
-	public void asignarGrupo(int g) {
+	public void asignarGrupo(int g, int s) {
+		if (viajes.get(viajes.size()-1).size() >= 2 &&
+			viajes.get(viajes.size()-1).getNPersonas() + s > 15) {
+			viajes.add(new Viaje());
+		}
+		viajes.get(viajes.size()-1).add(g, s);
 		gruposAsignados.add(g);
-		// TODO: actualizar gruposViajes y viajes
+		gruposViajes.add(viajes.size()-1);
 	}
 
 	/**
@@ -89,7 +101,8 @@ public class Helicoptero implements Cloneable {
 	}
 
 	/**
-	 * Intercambia los grupos en posición p1 de this.gruposAsignados y p2 de h.gruposAsignados
+	 * Intercambia los grupos en posición p1 de this.gruposAsignados y p2 de 
+	 * h.gruposAsignados
 	 * @param h  helicóptero con quien intercambiar
 	 * @param p1 posición del grupo en this.gruposAsignados
 	 * @param p2 posición del grupo en h.gruposAsignados

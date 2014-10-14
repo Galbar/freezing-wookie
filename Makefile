@@ -1,15 +1,15 @@
 CC        = javac
 
-IDIR      = src:dist/Desastres.jar
+IDIR      = "src:dist/Desastres.jar:dist/AIMA.jar"
 SDIR      = src/freezingwookie
 ODIR      = src/freezingwookie
 CFLAGS    = -classpath $(IDIR) -Xlint
-XFLAGS    = -jar dist/AIMA.jar -cp $(IDIR)
+XFLAGS    = -cp $(IDIR)
 
 EXEC      = freezingwookie.ControladorEstado
 
 MAIN      = ControladorEstado
-CLASSES   = Estado Helicoptero
+CLASSES   = Estado Helicoptero Operador
 
 OBJ       = $(patsubst %, $(ODIR)/%.class,$(MAIN)) $(patsubst %, $(ODIR)/%.class,$(CLASSES))
 
