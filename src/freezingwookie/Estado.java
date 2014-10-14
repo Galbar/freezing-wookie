@@ -102,6 +102,14 @@ public class Estado {
 		helicopteros.set(i, h);
 	}
 
+	/**
+	 * Comprueva si el intercambio entre dos grupos asignados a dos helicopteros
+	 * @param  Helicptero 1
+	 * @param  Identificador del grupo del helicoptero 1
+	 * @param  Helicoptero 2
+	 * @param  Identificador del grupo del helicoptero 2
+	 * @return Retorn true si es posible el intercambio, false en caso contrario
+	 */
 	public boolean intercambioPosible(int h1, int p1, int h2, int p2) {
 		int p = helicopteros.get(h1).getGrupo(p1);
 		int cost1 = grupos.get(p).getNPersonas();
