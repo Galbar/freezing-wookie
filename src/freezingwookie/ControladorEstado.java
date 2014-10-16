@@ -52,7 +52,7 @@ public class ControladorEstado {
 		Solucionador sol = new Solucionador();
 		Estado resultado;
 		if (st == 0) resultado = new Estado(sol.HillClimbing(e));
-		else resultado = new Estado(e);  // Estado(sol.SimulatedAnnealing(e));
+		else resultado = new Estado(e);  // Estado(sol.SimulatedAnnealing(e)); // TODO: update this shit
 
 		System.out.println("\nResultado:");
 		System.out.println("\tTiempo inicial:\n\t\ttodos = "+ e.consultaCosteTotal() + 

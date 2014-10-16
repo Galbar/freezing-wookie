@@ -5,10 +5,16 @@ import java.lang.Integer;
 import java.util.ArrayList;
 
 public class Estado {
+	
 	/**
-	* Lista de grupos asignados a los helicopteros
-	*/
-	private int[] plan;
+	 * Coste total recoger a todos los grupos
+	 */
+	private double costeTotal;
+
+	/**
+	 * Coste máximo recoger grupos de prioridad 1
+	 */
+	private double costeP1;
 
 	/**
 	* Centros de emerengia/rescate
@@ -36,7 +42,7 @@ public class Estado {
 	public Estado(Centros c, Grupos g, int solIni) {
 		centros = c;
 		grupos = g;
-		plan = new int[g.size()];
+		costeP1 = costeTotal = 0;
 
 		helicopteros = new ArrayList<Helicoptero>();
 		helicopterosCentros = new ArrayList<Integer>();
@@ -62,9 +68,10 @@ public class Estado {
 	public Estado(Estado e) {
 		centros = e.centros;
 		grupos = e.grupos;
-		plan = e.plan.clone();
 		helicopteros = new ArrayList<Helicoptero>(e.helicopteros);
 		helicopterosCentros = e.helicopterosCentros;
+		costeTotal = e.consultaCosteTotal();
+		costeP1 = e.consultaCostePrioridad1();
 	}
 
 	/**
@@ -124,17 +131,23 @@ public class Estado {
 	 * Devuelve el coste del estado
 	 * @return coste del estado
 	 */
-	public int consultaCosteTotal() {
-		return 10;
-		// TODO: implementar
+	public double consultaCosteTotal() {
+		return costeTotal;
 	}
 
 	/**
-	 * Devuelve el coste de recoger a los grupos de prioridad 1
-	 * @return coste de recoger los grupos de prioridad 1
+	 * Devuelve el coste màximo de rescatar al ultimo grupo de prioridad 1
+	 * @return coste màximo del rescate del último grupo de prioridad 1
 	 */
-	public int consultaCostePrioridad1() {
-		return 10;
-		// TODO: implementar
+	public double consultaCostePrioridad1() {
+		return costeP1;
 	}
+
+	/**
+	 * Actualiza el coste del estado
+	 */
+	public void calculaCoste() {
+
+	}
+
 }
