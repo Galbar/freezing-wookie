@@ -119,4 +119,22 @@ public class Estado {
 		if (p-cost1+cost2 > 15) return false;
 		return true;
 	}
+
+	/**
+	 * Devuelve el coste del estado
+	 * @return coste del estado
+	 */
+	public int consultaCosteTotal() {
+		return 10;
+		// TODO: implementar
+	}
+
+	/**
+	 * Devuelve el coste de recoger a los grupos de prioridad 1
+	 * @return coste de recoger los grupos de prioridad 1
+	 */
+	public int consultaCostePrioridad1() {
+		return 10;
+		// TODO: implementar
+	}
 }

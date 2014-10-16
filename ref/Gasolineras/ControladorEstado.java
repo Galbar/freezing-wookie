@@ -12,11 +12,7 @@ import aima.search.framework.Problem;
 import aima.search.framework.Search;
 import aima.search.framework.SearchAgent;
 import aima.search.framework.TreeSearch;
-import aima.search.informed.SimulatedAnnealingSearch;
-import aima.search.informed.HillClimbingSearch;
-
-
-
+ 
 /**
  *
  * @author jesus
