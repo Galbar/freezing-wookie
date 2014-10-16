@@ -13,12 +13,12 @@ public class Estado {
 	/**
 	* Centros de emerengia/rescate
 	*/
-	private Centros centros;
+	public Centros centros;
 
 	/**
 	* Grupos a rescatar
 	*/
-	private Grupos grupos;
+	public Grupos grupos;
 
 	/**
 	 * Estructura contenedora de helicópteros
@@ -111,14 +111,12 @@ public class Estado {
 	 * @return Retorn true si es posible el intercambio, false en caso contrario
 	 */
 	public boolean intercambioPosible(int h1, int p1, int h2, int p2) {
-		int p = helicopteros.get(h1).getGrupo(p1);
-		int cost1 = grupos.get(p).getNPersonas();
-
-
-		p = helicopteros.get(h2).getGrupo(p2);
-		int cost2 = grupos.get(p).getNPersonas();
-
-		// TODO finish this shit *estructura de grupViatges
-		return false;
+		int p = helicopteros.get(h1).getViaje(p1).getNPersonas();
+		int cost1 = grupos.get(p1).getNPersonas();
+		int cost2 = grupos.get(p2).getNPersonas();
+		if (p-cost1+cost2 > 15) return false;
+		p = helicopteros.get(h2).getViaje(p2).getNPersonas();
+		if (p-cost1+cost2 > 15) return false;
+		return true;
 	}
 }
