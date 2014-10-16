@@ -3,6 +3,8 @@ package freezingwookie;
 import IA.Desastres.*;
 import java.lang.Integer;
 import java.util.ArrayList;
+import java.util.Random;
+import java.lang.Math;
 
 public class Estado {
 	
@@ -42,7 +44,6 @@ public class Estado {
 	public Estado(Centros c, Grupos g, int solIni) {
 		centros = c;
 		grupos = g;
-		costeP1 = costeTotal = 0;
 
 		helicopteros = new ArrayList<Helicoptero>();
 		helicopterosCentros = new ArrayList<Integer>();
@@ -55,10 +56,8 @@ public class Estado {
 				++ini;
 			}
 		}
-		//if (solIni == 0)
-		//	SolucionInicial.distribuido(this);
-		//else
-		//	SolucionInicial.random(this);
+		if (solIni == 0) solucionInicialDistribuido();
+		else solucionInicialRandom();
 	}
 
 	/**
@@ -147,7 +146,83 @@ public class Estado {
 	 * Actualiza el coste del estado
 	 */
 	public void calculaCoste() {
-
+		double tmp1, tmp2;
+		costeTotal = costeP1 = -1;
+		for (int i = 0; i < helicopteros.size(); ++i) {
+			tmp2 = tmp1 = 0;
+			Helicoptero h = helicopteros.get(i);
+			int x = centros.get(helicopterosCentros.get(i)).getCoordX();
+			int y = centros.get(helicopterosCentros.get(i)).getCoordY();
+			for (int j = 0; j < h.getNViajes(); ++j) {
+				Viaje viaje = h.getViaje(j);
+				tmp1 += getCosteViaje(viaje,x,y);
+				if (contineGrupoP1(viaje)) tmp2 = tmp1;
+			}
+			if (costeTotal == -1) {
+				costeTotal = tmp1;
+				costeP1 = tmp2;
+			}
+			else {
+				costeTotal += tmp1;
+				if (costeP1 < tmp2) costeP1 = tmp2;
+			}
+		}
 	}
+
+	/**
+	 * Calcula el coste de un viaje
+	 * @param  v identificador del viaje
+	 * @return   coste del viaje
+	 */
+	public double getCosteViaje(Viaje viaje, int x, int y) {
+		double cost = 0;
+		int oldx = x;
+		int oldy = y;
+		int newx, newy;
+		int mult;
+		for (int i = 0; i < viaje.size(); ++i) {
+			if (grupos.get(viaje.getGrupo(i)).getPrioridad() == 1) mult = 2;
+			else mult = 1;
+			newx = centros.get(helicopterosCentros.get(i)).getCoordX();
+			newy = centros.get(helicopterosCentros.get(i)).getCoordY();
+			cost += (grupos.get(viaje.getGrupo(i)).getNPersonas()*mult+distancia(newx,newy,oldx,oldy)*(100/60));
+			oldx = newx;
+			oldy = newy; 
+		}
+		return cost+distancia(x,y,oldx,oldy)*(100/60);
+	}
+
+	private double distancia(int newx, int newy, int oldx, int oldy) {
+		return Math.sqrt(Math.pow(newx-oldx,2)+Math.pow(newy-oldy,2));
+	}
+
+	/**
+	 * Comprueba si el viaje rescata grupos de prioridad 1
+	 * @param  v identificador del viaje
+	 * @return   devuelve si el viaje rescata a grupos de prioridad 1
+	 */
+	public boolean contineGrupoP1(Viaje viaje) {
+		for (int i = 0; i < viaje.size(); ++i) {
+			if (grupos.get(viaje.getGrupo(i)).getPrioridad() == 1) return true;
+		}
+		return false;
+	}
+
+	/**
+     * Asigna al estado actual una solucion inicial random
+     */
+    public void solucionInicialRandom() {
+    	Random myRandom = new Random();
+        for (int i = 0; i < grupos.size(); ++i) {
+            int tmp = myRandom.nextInt(helicopterosCentros.size());
+            helicopteros.get(helicopterosCentros.get(tmp)+myRandom.nextInt(centros.get(
+                helicopterosCentros.get(tmp)).getNHelicopteros())).asignarGrupo
+                (i,grupos.get(i).getNPersonas());
+        }
+    }
+
+    public void solucionInicialDistribuido() {
+    	// TODO: everything
+    }
 
 }
