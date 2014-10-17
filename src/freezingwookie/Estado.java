@@ -54,9 +54,9 @@ public class Estado {
 		helicopterosCentros = new ArrayList<Integer>();
 		int ini = 0;
 		for (int i = 0; i < centros.size(); ++i) {
-			helicopterosCentros.add(ini);
 			Centro centro = centros.get(i);
 			for (int j = 0; j < centro.getNHelicopteros(); ++j) {
+				helicopterosCentros.add(ini);
 				helicopteros.add(new Helicoptero());
 				++ini;
 			}
@@ -241,20 +241,20 @@ public class Estado {
 			in_x[i] = centros.get(i).getCoordX();
 			in_y[i] = centros.get(i).getCoordY();
 		}
-		// Resultado de voronoi
-		List<GraphEdge> list = voronoi.generateVoronoi(in_x, in_y, 0, 50000, 0, 50000);
-		// Inicializar areas
+		// System.out.println("Resultado de voronoi");
+		List<GraphEdge> list = voronoi.generateVoronoi(in_x, in_y, 0, 50, 0, 50);
+		// System.out.println("Inicializar areas");
 		ArrayList<Polygon> areas = new ArrayList<Polygon>();
 		for (int i = 0; i < centros.size(); ++i) {
 			areas.add(new Polygon(1));
 		}
-		// Dar limites a las areas
+		// System.out.println("Dar limites a las areas");
 		for (int i = 0; i < list.size(); ++i) {
 			GraphEdge ge = list.get(i);
 			areas.get(ge.site1).add(ge.x1, ge.y1, ge.x2, ge.y2);
 			areas.get(ge.site2).add(ge.x1, ge.y1, ge.x2, ge.y2);
 		}
-		// Cerrar areas abiertas (areas pegadas al borde)
+		// System.out.println("Cerrar areas abiertas (areas pegadas al borde)");
 		for (int i = 0; i < areas.size(); ++i) {
 			Polygon area = areas.get(i);
 			if (area.size() != area.vertexSize()) {
@@ -268,12 +268,13 @@ public class Estado {
 					area.add(new Point(10, area.getMinBound().y), new Point(10, area.getMaxBound().y));
 			}
 		}
-		// Asignar a centros los grupos que estén en su area
+		// System.out.println("Asignar a centros los grupos que estén en su area");
     	Random random = new Random();
 		for (int i = 0; i < grupos.size(); ++i) {
 			Grupo grupo = grupos.get(i);
 			Point p = new Point(grupo.getCoordX(), grupo.getCoordY());
-			for (int j = 0; j < areas.size(); ++j) {
+			boolean found = false;
+			for (int j = 0; j < areas.size() && !found; ++j) {
 				Polygon area = areas.get(i);
 				if (area.isContained(p)) {
 					Centro centro =  centros.get(j);
@@ -282,6 +283,7 @@ public class Estado {
 						helicopterosCentros.get(centro.getNHelicopteros() + h)
 						);
 					heli.asignarGrupo(i, grupo.getNPersonas());
+					found = true;
 				}
 			}
 		}

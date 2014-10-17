@@ -29,9 +29,9 @@ public class RayCast {
 				Line line = lines.get(i);
 				if (intersected.get(i)) continue;
 				Point p = line.getValues(x, y);
-				if ((p.y >= (y - epsilon) && p.y < (y + epsilon))
-					&& (p.x >= (x - epsilon) && p.x < (x + epsilon))) {
-						count++;
+				if ((p.y >= (y - epsilon) && p.y <= (y + epsilon))
+					&& (p.x >= (x - epsilon) && p.x <= (x + epsilon))) {
+					count++;
 					intersected.set(i, true);
 				}
 			}
@@ -54,8 +54,8 @@ public class RayCast {
 				Line line = lines.get(i);
 				if (intersected.get(i)) continue;
 				Point p = line.getValues(x, y);
-				if ((p.y >= (y - epsilon) && p.y < (y + epsilon))
-					&& (p.x >= (x - epsilon) && p.x < (x + epsilon))) {
+				if ((p.y >= (y - epsilon) && p.y <= (y + epsilon))
+					&& (p.x >= (x - epsilon) && p.x <= (x + epsilon))) {
 					intersections.add(i);
 					intersected.set(i, true);
 				}
