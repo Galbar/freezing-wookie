@@ -12,7 +12,7 @@ public class Helicoptero implements Cloneable {
 	 */
 	public Helicoptero() {
 		gruposAsignados = new ArrayList<Integer>();
-		viajes = new ArrayList<Viaje>();
+		viajes = new ArrayList<Viaje>(1);
 		gruposViajes = new ArrayList<Integer>();
 	}
 
@@ -34,13 +34,21 @@ public class Helicoptero implements Cloneable {
 	 * @param g ID grupo asignado
 	 */
 	public void asignarGrupo(int g, int s) {
-		if (viajes.get(viajes.size()-1).size() >= 2 ||
-			viajes.get(viajes.size()-1).getNPersonas() + s > 15) {
-			viajes.add(new Viaje());
+		if (viajes.size() > 0) {
+			if (viajes.get(viajes.size()-1).size() >= 2 ||
+				viajes.get(viajes.size()-1).getNPersonas() + s > 15) {
+				viajes.add(new Viaje());
+			}
+			viajes.get(viajes.size()-1).add(g, s);
+			gruposAsignados.add(g);
+			gruposViajes.add(viajes.size()-1);
+		} else {
+			Viaje tmp = new Viaje();
+			tmp.add(g,s);
+			viajes.add(tmp);
+			gruposAsignados.add(g);
+			gruposViajes.add(viajes.size()-1);
 		}
-		viajes.get(viajes.size()-1).add(g, s);
-		gruposAsignados.add(g);
-		gruposViajes.add(viajes.size()-1);
 	}
 
 	/**

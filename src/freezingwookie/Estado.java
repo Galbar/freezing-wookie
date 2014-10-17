@@ -151,8 +151,16 @@ public class Estado {
 		for (int i = 0; i < helicopteros.size(); ++i) {
 			tmp2 = tmp1 = 0;
 			Helicoptero h = helicopteros.get(i);
-			int x = centros.get(helicopterosCentros.get(i)).getCoordX();
-			int y = centros.get(helicopterosCentros.get(i)).getCoordY();
+			int it = 0;
+			for (int k = 0; k < helicopterosCentros.size(); ++k) {
+				if (helicopterosCentros.get(k) <= i && centros.get(k).getNHelicopteros()+
+					helicopterosCentros.get(k) >= i) {
+					it = k;
+					break;
+				}
+			}
+			int x = centros.get(it).getCoordX();
+			int y = centros.get(it).getCoordY();
 			for (int j = 0; j < h.getNViajes(); ++j) {
 				Viaje viaje = h.getViaje(j);
 				tmp1 += getCosteViaje(viaje,x,y);
@@ -215,9 +223,8 @@ public class Estado {
     	Random myRandom = new Random();
         for (int i = 0; i < grupos.size(); ++i) {
             int tmp = myRandom.nextInt(helicopterosCentros.size());
-            helicopteros.get(helicopterosCentros.get(tmp)+myRandom.nextInt(centros.get(
-                helicopterosCentros.get(tmp)).getNHelicopteros())).asignarGrupo
-                (i,grupos.get(i).getNPersonas());
+            helicopteros.get(helicopterosCentros.get(tmp)+myRandom.nextInt(centros.get(tmp).
+            	getNHelicopteros())).asignarGrupo(i,grupos.get(i).getNPersonas());
         }
     }
 
