@@ -37,6 +37,7 @@ public class Estado {
 	 * Estructura contenedora de helicópteros
 	 */
 	private ArrayList<Helicoptero> helicopteros;
+
 	/**
 	 * Estructura que indica dónde empiezan y terminan los helicópteros de cada
 	 * centro en helicopteros
@@ -122,11 +123,13 @@ public class Estado {
 	 * @return Retorn true si es posible el intercambio, false en caso contrario
 	 */
 	public boolean intercambioPosible(int h1, int p1, int h2, int p2) {
-		int p = helicopteros.get(h1).getViaje(p1).getNPersonas();
+		int idViaje = helicopteros.get(h1).getViajeGrupo(p1);
+		int p = helicopteros.get(h1).getNPersonasViaje(idViaje);
 		int cost1 = grupos.get(p1).getNPersonas();
 		int cost2 = grupos.get(p2).getNPersonas();
 		if (p-cost1+cost2 > 15) return false;
-		p = helicopteros.get(h2).getViaje(p2).getNPersonas();
+		idViaje = helicopteros.get(h2).getViajeGrupo(p2);
+		p = helicopteros.get(h2).getNPersonasViaje(idViaje);
 		if (p-cost1+cost2 > 15) return false;
 		return true;
 	}
@@ -158,11 +161,9 @@ public class Estado {
 			for (int j = helicopterosCentros.get(i); j <
 				helicopterosCentros.get(i) + centro.getNHelicopteros(); ++j) {
 				Helicoptero h = helicopteros.get(j);
-				int x = centro.getCoordX();
-				int y = centro.getCoordY();
 				for (int k = 0; k < h.getNViajes(); ++k) {
-					Viaje viaje = h.getViaje(k);
-					tmp1 += getCosteViaje(viaje,x,y);
+					ArrayList<Integer> viaje = h.getGruposViaje(k);
+					tmp1 += getCosteViaje(i, j, viaje);
 					if (contineGrupoP1(viaje)) tmp2 = tmp1;
 				}
 				if (costeTotal == -1) {
@@ -179,27 +180,32 @@ public class Estado {
 
 	/**
 	 * Calcula el coste de un viaje
-	 * @param  v identificador del viaje
-	 * @return   coste del viaje
+	 * @param  idC    id del centro del helicoptero
+	 * @param  idH    id del helicoptero que hace el viaje
+	 * @param  viaje  lista de identificadores de los grupos del viaje en orden
+	 * @return
 	 */
-	public double getCosteViaje(Viaje viaje, int x, int y) {
+	public double getCosteViaje(int idC, int idH, ArrayList<Integer> viaje) {
 		double cost = 0;
+		Centro centro = centros.get(idC);
+		int x = centro.getCoordX();
+		int y = centro.getCoordY();
 		int oldx = x;
 		int oldy = y;
 		int newx, newy;
 		int mult;
+		Helicoptero heli = helicopteros.get(idH);
 		for (int i = 0; i < viaje.size(); ++i) {
-			if (grupos.get(viaje.getGrupo(i)).getPrioridad() == 1) mult = 2;
+			Grupo grupo = grupos.get(viaje.get(i));
+			if (grupo.getPrioridad() == 1) mult = 2;
 			else mult = 1;
-			newx = centros.get(helicopterosCentros.get(i)).getCoordX();
-			newy = centros.get(helicopterosCentros.get(i)).getCoordY();
-			cost += (grupos.get(viaje.getGrupo(i)).getNPersonas()*mult+distancia(newx,newy,oldx,oldy)*(100/60));
+			newx = centro.getCoordX();
+			newy = centro.getCoordY();
+			cost += (grupo.getNPersonas()*mult+distancia(newx,newy,oldx,oldy)*(100/60));
 			oldx = newx;
 			oldy = newy; 
 		}
 		return cost+distancia(x,y,oldx,oldy)*(100/60);
-
-		
 	}
 
 	private double distancia(int newx, int newy, int oldx, int oldy) {
@@ -211,9 +217,9 @@ public class Estado {
 	 * @param  v identificador del viaje
 	 * @return   devuelve si el viaje rescata a grupos de prioridad 1
 	 */
-	public boolean contineGrupoP1(Viaje viaje) {
+	public boolean contineGrupoP1(ArrayList<Integer> viaje) {
 		for (int i = 0; i < viaje.size(); ++i) {
-			if (grupos.get(viaje.getGrupo(i)).getPrioridad() == 1) return true;
+			if (grupos.get(viaje.get(i)).getPrioridad() == 1) return true;
 		}
 		return false;
 	}

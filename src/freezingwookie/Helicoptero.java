@@ -64,7 +64,7 @@ public class Helicoptero implements Cloneable {
 	 */
 	public Helicoptero() {
 		gruposAsignados = new ArrayList<Integer>();
-		viajes = new ArrayList<Viaje>(1);
+		viajes = new ArrayList<Viaje>();
 		gruposViajes = new ArrayList<Integer>();
 	}
 
@@ -84,6 +84,7 @@ public class Helicoptero implements Cloneable {
 	/**
 	 * Añade un nuevo grupo a los grupos asignados del helicóptero
 	 * @param g ID grupo asignado
+	 * @param s numero de personas en el grupo
 	 */
 	public void asignarGrupo(int g, int s) {
 		if (viajes.size() > 0) {
@@ -91,12 +92,12 @@ public class Helicoptero implements Cloneable {
 				viajes.get(viajes.size()-1).getNPersonas() + s > 15) {
 				viajes.add(new Viaje());
 			}
-			viajes.get(viajes.size()-1).add(g, s);
+			viajes.get(viajes.size()-1).add(gruposAsignados.size(), s);
 			gruposAsignados.add(g);
 			gruposViajes.add(viajes.size()-1);
 		} else {
 			Viaje tmp = new Viaje();
-			tmp.add(g,s);
+			tmp.add(gruposAsignados.size(),s);
 			viajes.add(tmp);
 			gruposAsignados.add(g);
 			gruposViajes.add(viajes.size()-1);
@@ -108,7 +109,7 @@ public class Helicoptero implements Cloneable {
 	 * @param g ID grupo
 	 * @param p Posición en la lista (0 <= p < getNGrupos())
 	 * @param s quantitat de persones del grup assignat
-	 */																			// NOTE: not used
+	 */
 	public void asignarGrupo(int g, int p, int s) {
 		if (viajes.get(viajes.size()-1).size() >= 2 ||
 			viajes.get(viajes.size()-1).getNPersonas() + s > 15) {
@@ -128,17 +129,6 @@ public class Helicoptero implements Cloneable {
 	public int getGrupo(int p) {
 		return gruposAsignados.get(p);
 	}
-
-	/**
-	 * Dado un grupo devuelv en que viaje esta asingado
-	 * @param  p1 id grupo
-	 * @return    viaje que contiene p1
-	 */
-	public double getGrupoViaje(int p1, int p2) {
-		int i = gruposViajes.get(p1);
-		Viaje v = viajes.get(i);
-		return ;
-	}	
 
 	/**
 	 * Intercambia los grupos en posición p1 de this.gruposAsignados y p2 de 
@@ -179,6 +169,34 @@ public class Helicoptero implements Cloneable {
 	 */
 	public int getNGruposViaje(int v) {
 		return viajes.get(v).size();
+	}
+
+	/**
+	 * Devuelve el numero de grupos que el helicóptero visita en el viaje <em>v</em>
+	 * @param  v identificador de viaje
+	 * @return   numero de grupos en el viaje
+	 */
+	public int getNPersonasViaje(int v) {
+		return viajes.get(v).getNPersonas();
+	}
+
+	/**
+	 * Devuelve el numero de grupos que el helicóptero visita en el viaje <em>v</em>
+	 * @param  v identificador de viaje
+	 * @return   numero de grupos en el viaje
+	 */
+	public ArrayList<Integer> getGruposViaje(int v) {
+		ArrayList<Integer> ret = new ArrayList<Integer>();
+		Viaje viaje = viajes.get(v);
+		for (int i = 0; i < viaje.size(); ++i) {
+			ret.add(gruposAsignados.get(
+				viaje.getGrupo(i)));
+		}
+		return ret;
+	}
+
+	public int getViajeGrupo(int g) {
+		return gruposViajes.get(g);
 	}
 
 }
