@@ -10,6 +10,9 @@ public class FuncionHeuristica  implements HeuristicFunction{
         e.calculaCoste();
         double c1 = e.consultaCosteTotal();
         double c2 = e.consultaCostePrioridad1();
-        return Math.sqrt(c1)+Math.pow(c2,2);
+        double ret = Math.sqrt(c1)+Math.pow(c2,2);
+        System.out.println("Heurisico: ");
+        System.out.println(ret);
+        return ret;
     }
 }

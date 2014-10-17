@@ -1,9 +1,9 @@
 package freezingwookie;
 
+import java.io.Console;
 import be.humphreys.simplevoronoi.Voronoi;
 import be.humphreys.simplevoronoi.GraphEdge;
 import cc.alessio.geometry2D.*;
-import java.lang.Double;
 import IA.Desastres.*;
 import java.lang.Integer;
 import java.util.ArrayList;
@@ -151,33 +151,28 @@ public class Estado {
 	 * Actualiza el coste del estado
 	 */
 	public void calculaCoste() {
-		double tmp1, tmp2;
+		double tmp1 = 0, tmp2 = 0;
 		costeTotal = costeP1 = -1;
-		for (int i = 0; i < helicopteros.size(); ++i) {
-			tmp2 = tmp1 = 0;
-			Helicoptero h = helicopteros.get(i);
-			int it = 0;
-			for (int k = 0; k < helicopterosCentros.size(); ++k) {
-				if (helicopterosCentros.get(k) <= i && centros.get(k).getNHelicopteros()+
-					helicopterosCentros.get(k) >= i) {
-					it = k;
-					break;
+		for (int i = 0; i < centros.size(); ++i) {
+			Centro centro = centros.get(i);
+			for (int j = helicopterosCentros.get(i); j <
+				helicopterosCentros.get(i) + centro.getNHelicopteros(); ++j) {
+				Helicoptero h = helicopteros.get(j);
+				int x = centro.getCoordX();
+				int y = centro.getCoordY();
+				for (int k = 0; k < h.getNViajes(); ++k) {
+					Viaje viaje = h.getViaje(k);
+					tmp1 += getCosteViaje(viaje,x,y);
+					if (contineGrupoP1(viaje)) tmp2 = tmp1;
 				}
-			}
-			int x = centros.get(it).getCoordX();
-			int y = centros.get(it).getCoordY();
-			for (int j = 0; j < h.getNViajes(); ++j) {
-				Viaje viaje = h.getViaje(j);
-				tmp1 += getCosteViaje(viaje,x,y);
-				if (contineGrupoP1(viaje)) tmp2 = tmp1;
-			}
-			if (costeTotal == -1) {
-				costeTotal = tmp1;
-				costeP1 = tmp2;
-			}
-			else {
-				costeTotal += tmp1;
-				if (costeP1 < tmp2) costeP1 = tmp2;
+				if (costeTotal == -1) {
+					costeTotal = tmp1;
+					costeP1 = tmp2;
+				}
+				else {
+					costeTotal += tmp1;
+					if (costeP1 < tmp2) costeP1 = tmp2;
+				}
 			}
 		}
 	}
@@ -203,6 +198,8 @@ public class Estado {
 			oldy = newy; 
 		}
 		return cost+distancia(x,y,oldx,oldy)*(100/60);
+
+		
 	}
 
 	private double distancia(int newx, int newy, int oldx, int oldy) {
@@ -225,11 +222,15 @@ public class Estado {
      * Asigna al estado actual una solucion inicial random
      */
     public void solucionInicialRandom() {
-    	Random myRandom = new Random();
+		Console console = System.console();
+    	int seed = Integer.parseInt(console.readLine("Seed solución inicial aleatoria: "));
+    	Random myRandom = new Random(seed);
         for (int i = 0; i < grupos.size(); ++i) {
-            int tmp = myRandom.nextInt(helicopterosCentros.size());
-            helicopteros.get(helicopterosCentros.get(tmp)+myRandom.nextInt(centros.get(tmp).
-            	getNHelicopteros())).asignarGrupo(i,grupos.get(i).getNPersonas());
+            int tmp = myRandom.nextInt(centros.size());
+            helicopteros.get(helicopterosCentros.get(tmp)+
+            	myRandom.nextInt(centros.get(tmp).
+            	getNHelicopteros())).asignarGrupo(
+            i,grupos.get(i).getNPersonas());
         }
     }
 
@@ -242,7 +243,8 @@ public class Estado {
 			in_y[i] = centros.get(i).getCoordY();
 		}
 		// System.out.println("Resultado de voronoi");
-		List<GraphEdge> list = voronoi.generateVoronoi(in_x, in_y, 0, 50, 0, 50);
+		List<GraphEdge> list = 
+			voronoi.generateVoronoi(in_x, in_y, 0, 50, 0, 50);
 		// System.out.println("Inicializar areas");
 		ArrayList<Polygon> areas = new ArrayList<Polygon>();
 		for (int i = 0; i < centros.size(); ++i) {
@@ -259,13 +261,17 @@ public class Estado {
 			Polygon area = areas.get(i);
 			if (area.size() != area.vertexSize()) {
 				if (area.getMinBound().y == 0)
-					area.add(new Point(area.getMinBound().x, 0), new Point(area.getMaxBound().x, 0));
-				if (area.getMaxBound().y == 10)
-					area.add(new Point(area.getMinBound().x, 10), new Point(area.getMaxBound().x, 10));
+					area.add(new Point(area.getMinBound().x, 0),
+						new Point(area.getMaxBound().x, 0));
+				if (area.getMaxBound().y == 50)
+					area.add(new Point(area.getMinBound().x, 50),
+						new Point(area.getMaxBound().x, 50));
 				if (area.getMinBound().x == 0)
-					area.add(new Point(0, area.getMinBound().y), new Point(0, area.getMaxBound().y));
-				if (area.getMaxBound().x == 10)
-					area.add(new Point(10, area.getMinBound().y), new Point(10, area.getMaxBound().y));
+					area.add(new Point(0, area.getMinBound().y),
+						new Point(0, area.getMaxBound().y));
+				if (area.getMaxBound().x == 50)
+					area.add(new Point(50, area.getMinBound().y),
+						new Point(50, area.getMaxBound().y));
 			}
 		}
 		// System.out.println("Asignar a centros los grupos que estén en su area");
@@ -275,9 +281,9 @@ public class Estado {
 			Point p = new Point(grupo.getCoordX(), grupo.getCoordY());
 			boolean found = false;
 			for (int j = 0; j < areas.size() && !found; ++j) {
-				Polygon area = areas.get(i);
+				Polygon area = areas.get(j);
 				if (area.isContained(p)) {
-					Centro centro =  centros.get(j);
+					Centro centro = centros.get(j);
 					int h = random.nextInt(centro.getNHelicopteros());
 					Helicoptero heli = helicopteros.get(
 						helicopterosCentros.get(centro.getNHelicopteros() + h)
