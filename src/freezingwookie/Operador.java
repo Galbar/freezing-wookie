@@ -29,7 +29,9 @@ public class Operador implements SuccessorFunction{
 							eTmp = new Estado(e);
 							Helicoptero h1 = eTmp.getCopiaHelicoptero(i);
 							Helicoptero h2 = eTmp.getCopiaHelicoptero(j);
-							h1.intercambiarGrupos(k, h2, l);
+							int coste1 = eTmp.grupos.get(k).getNPersonas();
+							int coste2 = eTmp.grupos.get(l).getNPersonas();
+							h1.intercambiarGrupos(k, coste1, h2, coste2, l);
 							eTmp.asignarHelicoptero(i, h1);
 							eTmp.asignarHelicoptero(j, h2);
 							ret.add(new Successor("Helicóptero "

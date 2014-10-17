@@ -3,13 +3,13 @@ CC        = javac
 IDIR      = "src:dist/Desastres.jar:dist/AIMA.jar"
 SDIR      = src/freezingwookie
 ODIR      = src/freezingwookie
-CFLAGS    = -classpath $(IDIR) -Xlint
+CFLAGS    = -classpath $(IDIR)
 XFLAGS    = -cp $(IDIR)
 
 EXEC      = freezingwookie.VoronoiTest
 
-MAIN      = VoronoiTest
-CLASSES   = VoronoiTest 
+MAIN      = ControladorEstado
+CLASSES   = Estado Helicoptero Operador Final FuncionHeuristica Solucionador Viaje
 
 OBJ       = $(patsubst %, $(ODIR)/%.class,$(MAIN)) $(patsubst %, $(ODIR)/%.class,$(CLASSES))
 
