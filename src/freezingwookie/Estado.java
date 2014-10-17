@@ -1,8 +1,13 @@
 package freezingwookie;
 
+import be.humphreys.simplevoronoi.Voronoi;
+import be.humphreys.simplevoronoi.GraphEdge;
+import cc.alessio.geometry2D.*;
+import java.lang.Double;
 import IA.Desastres.*;
 import java.lang.Integer;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.lang.Math;
 
@@ -229,7 +234,57 @@ public class Estado {
     }
 
     public void solucionInicialDistribuido() {
-    	// TODO: everything
+    	Voronoi voronoi = new Voronoi(1);
+    	double[] in_x = new double[centros.size()];
+		double[] in_y = new double[centros.size()];
+		for (int i = 0; i < centros.size(); ++i) {
+			in_x[i] = centros.get(i).getCoordX();
+			in_y[i] = centros.get(i).getCoordY();
+		}
+		// Resultado de voronoi
+		List<GraphEdge> list = voronoi.generateVoronoi(in_x, in_y, 0, 50000, 0, 50000);
+		// Inicializar areas
+		ArrayList<Polygon> areas = new ArrayList<Polygon>();
+		for (int i = 0; i < centros.size(); ++i) {
+			areas.add(new Polygon(1));
+		}
+		// Dar limites a las areas
+		for (int i = 0; i < list.size(); ++i) {
+			GraphEdge ge = list.get(i);
+			areas.get(ge.site1).add(ge.x1, ge.y1, ge.x2, ge.y2);
+			areas.get(ge.site2).add(ge.x1, ge.y1, ge.x2, ge.y2);
+		}
+		// Cerrar areas abiertas (areas pegadas al borde)
+		for (int i = 0; i < areas.size(); ++i) {
+			Polygon area = areas.get(i);
+			if (area.size() != area.vertexSize()) {
+				if (area.getMinBound().y == 0)
+					area.add(new Point(area.getMinBound().x, 0), new Point(area.getMaxBound().x, 0));
+				if (area.getMaxBound().y == 10)
+					area.add(new Point(area.getMinBound().x, 10), new Point(area.getMaxBound().x, 10));
+				if (area.getMinBound().x == 0)
+					area.add(new Point(0, area.getMinBound().y), new Point(0, area.getMaxBound().y));
+				if (area.getMaxBound().x == 10)
+					area.add(new Point(10, area.getMinBound().y), new Point(10, area.getMaxBound().y));
+			}
+		}
+		// Asignar a centros los grupos que estén en su area
+    	Random random = new Random();
+		for (int i = 0; i < grupos.size(); ++i) {
+			Grupo grupo = grupos.get(i);
+			Point p = new Point(grupo.getCoordX(), grupo.getCoordY());
+			for (int j = 0; j < areas.size(); ++j) {
+				Polygon area = areas.get(i);
+				if (area.isContained(p)) {
+					Centro centro =  centros.get(j);
+					int h = random.nextInt(centro.getNHelicopteros());
+					Helicoptero heli = helicopteros.get(
+						helicopterosCentros.get(centro.getNHelicopteros() + h)
+						);
+					heli.asignarGrupo(i, grupo.getNPersonas());
+				}
+			}
+		}
     }
 
 }

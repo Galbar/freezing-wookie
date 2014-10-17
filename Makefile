@@ -6,7 +6,7 @@ ODIR      = src/freezingwookie
 CFLAGS    = -classpath $(IDIR)
 XFLAGS    = -cp $(IDIR)
 
-EXEC      = freezingwookie.VoronoiTest
+EXEC      = freezingwookie.ControladorEstado
 
 MAIN      = ControladorEstado
 CLASSES   = Estado Helicoptero Operador Final FuncionHeuristica Solucionador Viaje
