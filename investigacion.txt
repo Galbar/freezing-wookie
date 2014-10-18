@@ -3,5 +3,7 @@ Coste prioridad 1 (CP1): el tiempo en que el último grupo de prioridad 1 es res
 
 Primer Heuristico: sqrt(CT) + pow(CP1,2)
 Observaciones:	
-	Hill climbing: s'observa una millora substancial
-	Simulated annealing:  
+	Hill climbing:
+		Inicial Aleatoria: s'observa una millora substancial
+		Inicial Distribuida: s'observa una millora substancial
+	Simulated annealing:

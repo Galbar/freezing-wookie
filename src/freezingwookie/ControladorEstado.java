@@ -3,6 +3,7 @@ package freezingwookie;
 import IA.Desastres.*;
 import java.io.Console;
 import java.lang.Integer;
+import java.lang.Float;
 
 public class ControladorEstado {
 
@@ -52,7 +53,13 @@ public class ControladorEstado {
 		Solucionador sol = new Solucionador();
 		Estado resultado;
 		if (st == 0) resultado = new Estado(sol.HillClimbing(e));
-		else resultado = new Estado(e);  // Estado(sol.SimulatedAnnealing(e)); // TODO: update this shit
+		else {
+			int iteracion   = Integer.parseInt(console.readLine("iteracion: "));
+			int temperatura = Integer.parseInt(console.readLine("temperatura: "));
+			int K           = Integer.parseInt(console.readLine("K: "));
+			float lambda    = Float.parseFloat(console.readLine("lambda: "));
+			resultado = new Estado(sol.SimulatedAnnealing(e, iteracion, temperatura, K, lambda)); // TODO: update this shit
+		}
 
 		System.out.println("\nResultado:");
 		System.out.println("\tTiempo inicial:\n\t\ttodos = "+ e.consultaCosteTotal() + 

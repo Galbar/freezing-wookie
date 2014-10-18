@@ -9,14 +9,18 @@ XFLAGS    = -cp $(IDIR)
 EXEC      = freezingwookie.ControladorEstado
 
 MAIN      = ControladorEstado
-CLASSES   = Estado Helicoptero Operador Final FuncionHeuristica Solucionador Viaje
+CLASSES   = \
+           Estado \
+           Helicoptero \
+           Operador \
+           Final \
+           FuncionHeuristica \
+           Solucionador \
+           Viaje
 
 OBJ       = $(patsubst %, $(ODIR)/%.class,$(MAIN)) $(patsubst %, $(ODIR)/%.class,$(CLASSES))
 
-all: $(OBJ) geometry2D
-
-geometry2D:
-	javac src/cc/alessio/geometry2D/*.java
+all: $(OBJ)
 
 $(ODIR)/%.class: $(SDIR)/%.java
 	$(CC) $(CFLAGS) $<

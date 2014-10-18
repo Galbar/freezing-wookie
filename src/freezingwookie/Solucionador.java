@@ -26,10 +26,10 @@ public class Solucionador {
     }
 
     // NOTE: NO ADAPTADA AL NOSTRE PROBLEMA
-    public Estado SimulatedAnnealing(Estado estadoInicial, int iteracion, int grados, int K, float B) {
+    public Estado SimulatedAnnealing(Estado estadoInicial, int iteracion, int temperatura, int K, float lambda) {
         try {
             Problem problema = new Problem(estadoInicial,new Operador(),new Final(),new FuncionHeuristica());
-            SimulatedAnnealingSearch busqueda =  new SimulatedAnnealingSearch(iteracion,grados,K,B);
+            SimulatedAnnealingSearch busqueda =  new SimulatedAnnealingSearch(iteracion,temperatura,K,lambda);
             SearchAgent agente = new SearchAgent(problema,busqueda);
 
             return (Estado)busqueda.getGoalState();
