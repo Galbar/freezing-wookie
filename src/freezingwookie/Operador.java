@@ -49,9 +49,9 @@ public class Operador implements SuccessorFunction{
 		// Asignar un grupo de un helicóptero a otro
 		for (int i = 0; i < e.getNHelicopteros(); ++i) {
 			int h1NGrupos = e.getHelicoptero(i).getNGrupos();
-			for (int j = i+1; j < e.getNHelicopteros(); ++j) {   // Helicópteros todos con todos
+			for (int j = i+1; j < e.getNHelicopteros(); ++j) {    // Helicópteros todos con todos
 				int h2NGrupos = e.getHelicoptero(j).getNGrupos();
-				for (int k = 0; k < h1NGrupos; ++k) {        // para todos sus grupos todos con todos
+				for (int k = 0; k < h1NGrupos; ++k) {             // para todos sus grupos todos con todos
 					eTmp = new Estado(e);
 					Helicoptero h1 = eTmp.getCopiaHelicoptero(i);
 					Helicoptero h2 = eTmp.getCopiaHelicoptero(j);
@@ -74,7 +74,25 @@ public class Operador implements SuccessorFunction{
 
 		// TODO: Intercambiar grupos entre los viajes de un helicóptero
 		// TODO: Intercambiar orden de grupos dentro de un viaje de un helicóptero
+		
 		// TODO: Intercambiar orden de los viajes de un helicóptero
+		for (int i = 0; i < e.getNHelicopteros(); ++i) {
+			int hNViajes = e.getHelicoptero(i).getNViajes();
+			for (int j = 0; j < hNViajes; ++j) {
+				for (int k = j+1; k < hNViajes; ++k) {            // para todos sus viajes, todos con todos
+					eTmp = new Estado(e);
+					Helicoptero h = eTmp.getCopiaHelicoptero(i);
+					h.intercambiarViajes(j, k);
+					eTmp.asignarHelicoptero(i, h);
+					ret.add(new Successor("Helicóptero "
+						+ String.valueOf(i) + " hace primero el viaje "
+						+ String.valueOf(k)
+						+ " que el viaje " + String.valueOf(j)
+						+ String.valueOf(i) + ".\n",
+						eTmp));
+				}
+			}
+		}
 
 		return ret;
 	}

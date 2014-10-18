@@ -165,6 +165,12 @@ public class Helicoptero implements Cloneable {
 		h.gruposAsignados.set(p2,g1);
 	}
 
+	public void intercambiarViajes(int v1, int v2) {
+		Viaje tmp = viajes.get(v1);
+		viajes.set(v1, viajes.get(v2));
+		viajes.set(v2, tmp);
+	}
+
 	/**
 	 * Devuelve el número de grupos que tiene asignado el helicóptero
 	 * @return Número de grupos asignados
