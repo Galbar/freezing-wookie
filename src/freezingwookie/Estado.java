@@ -186,6 +186,7 @@ public class Estado {
 	 * @return
 	 */
 	public double getCosteViaje(int idC, int idH, ArrayList<Integer> viaje) {
+		if (viaje.size() == 0) return 0;
 		double cost = 0;
 		Centro centro = centros.get(idC);
 		int x = centro.getCoordX();

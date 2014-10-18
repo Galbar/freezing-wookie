@@ -29,6 +29,11 @@ class Viaje implements Cloneable{
 		return p.size();
 	}
 
+	public void remove (int i, int s) {
+		p.remove(new Integer(i));
+		this.s -= s;
+	}
+
 	public Viaje clone() {
 		Viaje v = new Viaje();
 		v.p = new ArrayList<Integer>(p);
@@ -51,6 +56,14 @@ public class Helicoptero implements Cloneable {
 	private ArrayList<Integer> gruposAsignados;
 	private ArrayList<Viaje> viajes;
 	private ArrayList<Integer> gruposViajes;
+	private ArrayList<Integer> gruposInvalidos;
+
+	private int getPosicionReal(int p) {
+		int count = 0;
+		for (int i = 0; i < gruposInvalidos.size(); ++i)
+			if (gruposInvalidos.get(i) < p) count++;
+		return p+count;
+	}
 
 	/**
 	 * Constructora
@@ -59,6 +72,7 @@ public class Helicoptero implements Cloneable {
 		gruposAsignados = new ArrayList<Integer>();
 		viajes = new ArrayList<Viaje>();
 		gruposViajes = new ArrayList<Integer>();
+		gruposInvalidos = new ArrayList<Integer>();
 	}
 
 	/**
@@ -71,6 +85,7 @@ public class Helicoptero implements Cloneable {
 			h.viajes.add(viajes.get(i).clone());
 		}
 		h.gruposViajes = new ArrayList<Integer>(gruposViajes);
+		h.gruposInvalidos = new ArrayList<Integer>(gruposInvalidos);
 		return h;
 	}
 
@@ -85,32 +100,38 @@ public class Helicoptero implements Cloneable {
 				viajes.get(viajes.size()-1).getNPersonas() + s > 15) {
 				viajes.add(new Viaje());
 			}
-			viajes.get(viajes.size()-1).add(gruposAsignados.size(), s);
-			gruposAsignados.add(g);
-			gruposViajes.add(viajes.size()-1);
+			Viaje viaje = viajes.get(viajes.size()-1);
+			if (gruposInvalidos.size() > 0) {
+				int i = gruposInvalidos.get(0);
+				gruposInvalidos.remove(0);
+				gruposAsignados.set(i, g);
+				viaje.add(i, s);
+				gruposViajes.set(i, viajes.size()-1);
+			}
+			else {
+				gruposAsignados.add(g);
+				viaje.add(getNGrupos()-1, s);
+				gruposViajes.add(viajes.size()-1);
+			}
 		} else {
 			Viaje tmp = new Viaje();
-			tmp.add(gruposAsignados.size(),s);
-			viajes.add(tmp);
 			gruposAsignados.add(g);
+			tmp.add(getNGrupos()-1,s);
+			viajes.add(tmp);
 			gruposViajes.add(viajes.size()-1);
 		}
 	}
 
 	/**
-	 * Pone en la posición p de gruposAsignados el grupo g
-	 * @param g ID grupo
-	 * @param p Posición en la lista (0 <= p < getNGrupos())
-	 * @param s quantitat de persones del grup assignat
+	 * Quita un grupo de los grupos asignados del helicóptero
+	 * @param p Posición en la lista
+	 * @param s numero de personas en el grupo
 	 */
-	public void asignarGrupo(int g, int p, int s) {
-		if (viajes.get(viajes.size()-1).size() >= 2 ||
-			viajes.get(viajes.size()-1).getNPersonas() + s > 15) {
-			viajes.add(new Viaje());
-		}
-		viajes.get(viajes.size()-1).add(g, s);
-		gruposAsignados.set(p, g);
-		gruposViajes.add(viajes.size()-1);
+	public void desasignarGrupo(int p, int s) {
+		p = getPosicionReal(p);
+		gruposInvalidos.add(p);
+		Viaje viaje = viajes.get(gruposViajes.get(p));
+		viaje.remove(p, s);
 	}
 
 	/**
@@ -120,6 +141,7 @@ public class Helicoptero implements Cloneable {
 	 * @return   ID del grupo p (0 <= p < getNGrupos())
 	 */
 	public int getGrupo(int p) {
+		p = getPosicionReal(p);
 		return gruposAsignados.get(p);
 	}
 
@@ -131,7 +153,10 @@ public class Helicoptero implements Cloneable {
 	 * @param p2 posición del grupo en h.gruposAsignados
 	 */
 	
-	public void intercambiarGrupos(int p1, int coste1, Helicoptero h, int coste2, int p2) {
+	public void intercambiarGrupos(int p1, int coste1, Helicoptero h,
+								   int coste2, int p2) {
+		p1 = getPosicionReal(p1);
+		p2 = h.getPosicionReal(p2);
 		int g1 = gruposAsignados.get(p1);
 		int g2 = h.gruposAsignados.get(p2);
 		viajes.get(gruposViajes.get(p1)).update(coste1,coste2);
@@ -145,7 +170,7 @@ public class Helicoptero implements Cloneable {
 	 * @return Número de grupos asignados
 	 */
 	public int getNGrupos() {
-		return gruposAsignados.size();
+		return gruposAsignados.size() - gruposInvalidos.size();
 	}
 
 	/**
@@ -196,6 +221,7 @@ public class Helicoptero implements Cloneable {
 	 * @return   identificador del viaje
 	 */
 	public int getViajeGrupo(int p1) {
+		p1 = getPosicionReal(p1);
 		return gruposViajes.get(p1);
 	}
 
