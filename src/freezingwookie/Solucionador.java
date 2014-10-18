@@ -25,7 +25,6 @@ public class Solucionador {
         }
     }
 
-    // NOTE: NO ADAPTADA AL NOSTRE PROBLEMA
     public Estado SimulatedAnnealing(Estado estadoInicial, int iteracion, int temperatura, int K, float lambda) {
         try {
             Problem problema = new Problem(estadoInicial,new Operador(),new Final(),new FuncionHeuristica());

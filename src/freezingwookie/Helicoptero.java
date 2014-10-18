@@ -6,8 +6,6 @@ class Viaje implements Cloneable{
 	private ArrayList<Integer> p;
 	private int s;
 
-	// TODO: comentar todas estas bonitas funciones
-
 	public Viaje() {
 		p = new ArrayList<Integer>();
 		s = 0;
@@ -23,11 +21,6 @@ class Viaje implements Cloneable{
 		s -= i;
 	}
 
-	/**
-	 * Devuelve el grupo del i del viaje
-	 * @param  i posicion del grupo en el viaje
-	 * @return   identificador del grupo
-	 */
 	public int getGrupo(int i) {
 		return p.get(i);
 	} 
@@ -137,6 +130,7 @@ public class Helicoptero implements Cloneable {
 	 * @param p1 posición del grupo en this.gruposAsignados
 	 * @param p2 posición del grupo en h.gruposAsignados
 	 */
+	
 	public void intercambiarGrupos(int p1, int coste1, Helicoptero h, int coste2, int p2) {
 		int g1 = gruposAsignados.get(p1);
 		int g2 = h.gruposAsignados.get(p2);
@@ -195,8 +189,14 @@ public class Helicoptero implements Cloneable {
 		return ret;
 	}
 
-	public int getViajeGrupo(int g) {
-		return gruposViajes.get(g);
+	/**
+	 * Devuleve el identificador del viaje en el que está el grupo
+	 * con posición p1 en gruposAsignados
+	 * @param p1 posición del grupo en gruposAsignados
+	 * @return   identificador del viaje
+	 */
+	public int getViajeGrupo(int p1) {
+		return gruposViajes.get(p1);
 	}
 
 }

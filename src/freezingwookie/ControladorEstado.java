@@ -30,7 +30,7 @@ public class ControladorEstado {
 			int temperatura = Integer.parseInt(console.readLine("temperatura: "));
 			int K           = Integer.parseInt(console.readLine("K: "));
 			float lambda    = Float.parseFloat(console.readLine("lambda: "));
-			resultado = new Estado(sol.SimulatedAnnealing(e, iteracion, temperatura, K, lambda)); // TODO: update this shit
+			resultado = new Estado(sol.SimulatedAnnealing(e, iteracion, temperatura, K, lambda));
 		}
 
 		io.imprimeResultado(e.consultaCosteTotal(), e.consultaCostePrioridad1(),
