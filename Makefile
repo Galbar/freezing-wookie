@@ -9,6 +9,7 @@ XFLAGS    = -cp $(IDIR)
 EXEC      = freezingwookie.ControladorEstado
 
 MAIN      = ControladorEstado
+
 CLASSES   = \
            Estado \
            Helicoptero \
@@ -16,7 +17,9 @@ CLASSES   = \
            Final \
            FuncionHeuristica \
            Solucionador \
-           Viaje
+           Viaje \
+           InputOutput
+
 
 OBJ       = $(patsubst %, $(ODIR)/%.class,$(MAIN)) $(patsubst %, $(ODIR)/%.class,$(CLASSES))
 

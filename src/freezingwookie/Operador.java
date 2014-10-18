@@ -46,6 +46,7 @@ public class Operador implements SuccessorFunction{
 			}
 		}
 
+		// TODO: "Intercambiar" helicopteros entre centros
 		// TODO: Intercambiar grupos entre los viajes de un helicóptero
 		// TODO: Intercambiar orden de grupos dentro de un viaje de un helicóptero
 		// TODO: Intercambiar orden de los viajes de un helicóptero

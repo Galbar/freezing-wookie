@@ -229,8 +229,8 @@ public class Estado {
      */
     public void solucionInicialRandom() {
 		Console console = System.console();
-    	int seed = Integer.parseInt(console.readLine("Seed solución inicial aleatoria: "));
-    	Random myRandom = new Random(seed);
+    	InputOutput io = new InputOutput();
+    	Random myRandom = new Random(io.seed());
         for (int i = 0; i < grupos.size(); ++i) {
             int tmp = myRandom.nextInt(centros.size());
             helicopteros.get(helicopterosCentros.get(tmp)+
