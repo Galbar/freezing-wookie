@@ -26,11 +26,8 @@ public class ControladorEstado {
 
 		if (io.sol() == 0) resultado = new Estado(sol.HillClimbing(e));
 		else {
-			int iteracion   = Integer.parseInt(console.readLine("iteracion: "));
-			int temperatura = Integer.parseInt(console.readLine("temperatura: "));
-			int K           = Integer.parseInt(console.readLine("K: "));
-			float lambda    = Float.parseFloat(console.readLine("lambda: "));
-			resultado = new Estado(sol.SimulatedAnnealing(e, iteracion, temperatura, K, lambda));
+			resultado = new Estado(sol.SimulatedAnnealing(e, io.getIteraciones(), io.getTemperatura(), 
+				io.getK(), io.getLambda()));
 		}
 
 		io.imprimeResultado(e.consultaCosteTotal(), e.consultaCostePrioridad1(),
