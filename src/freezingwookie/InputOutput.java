@@ -90,4 +90,36 @@ public class InputOutput {
 		System.out.println("\tTiempo final:\n\t\ttodos = "+ res1 + 
 			"\n\t\tgrupos prioridad 1 = " + res2);
 	}
+
+	/**
+	 * Pregunta por terminal el numero de iteraciones para el simulated annealing
+	 * @return numero de iteraciones para el simulated annealing
+	 */
+	public int getIteraciones() {
+		return Integer.parseInt(console.readLine("Introduce el nº de iteraciones: "));
+	}
+
+	/**
+	 * Pregunta por terminal la temperatura para el simulated annealing
+	 * @return temperatura para el simulated annealing
+	 */
+	public int getTemperatura() {
+		return Integer.parseInt(console.readLine("Introduce la temperatura: "));
+	}
+
+	/**
+	 * Pregunta por terminal la K para el simulated annealing
+	 * @return la variable K para el simulated annealing
+	 */
+	public int getK() {
+		return Integer.parseInt(console.readLine("Introduce la K "));
+	}
+
+	/**
+	 * Pregunta por terminal la lambda para el simulated annealing
+	 * @return la lambda para el simulated annealing
+	 */
+	public float getLambda() {
+		return Float.parseFloat(console.readLine("Introduce la lambda: "));
+	}
 }
