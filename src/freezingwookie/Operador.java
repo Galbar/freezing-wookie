@@ -75,7 +75,7 @@ public class Operador implements SuccessorFunction{
 		// TODO: Intercambiar grupos entre los viajes de un helicóptero
 		// TODO: Intercambiar orden de grupos dentro de un viaje de un helicóptero
 		
-		// TODO: Intercambiar orden de los viajes de un helicóptero
+		// Intercambiar orden de los viajes de un helicóptero
 		for (int i = 0; i < e.getNHelicopteros(); ++i) {
 			int hNViajes = e.getHelicoptero(i).getNViajes();
 			for (int j = 0; j < hNViajes; ++j) {
