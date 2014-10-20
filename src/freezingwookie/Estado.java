@@ -154,13 +154,13 @@ public class Estado {
 	 * Actualiza el coste del estado
 	 */
 	public void calculaCoste() {
-		double tmp1 = 0, tmp2 = 0;
 		costeTotal = costeP1 = 0;
 		for (int i = 0; i < centros.size(); ++i) {
 			Centro centro = centros.get(i);
 			for (int j = helicopterosCentros.get(i); j <
 				helicopterosCentros.get(i) + centro.getNHelicopteros(); ++j) {
 				Helicoptero h = helicopteros.get(j);
+				double tmp1 = 0, tmp2 = 0;
 				for (int k = 0; k < h.getNViajes(); ++k) {
 					ArrayList<Integer> viaje = h.getGruposViaje(k);
 					if (viaje.size() == 0) continue;
@@ -197,11 +197,11 @@ public class Estado {
 			else mult = 1;
 			newx = grupo.getCoordX();
 			newy = grupo.getCoordY();
-			cost += (grupo.getNPersonas()*mult+distancia(newx,newy,oldx,oldy)*(60/100));
+			cost += (grupo.getNPersonas()*mult+distancia(newx,newy,oldx,oldy)*(60.0/100.0));
 			oldx = newx;
 			oldy = newy; 
 		}
-		return cost+distancia(x,y,oldx,oldy)*(60/100);
+		return cost+distancia(x,y,oldx,oldy)*(60.0/100.0);
 	}
 
 	private double distancia(int newx, int newy, int oldx, int oldy) {
