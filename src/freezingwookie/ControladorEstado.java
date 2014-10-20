@@ -29,7 +29,8 @@ public class ControladorEstado {
 			resultado = new Estado(sol.SimulatedAnnealing(e, io.getIteraciones(), io.getTemperatura(), 
 				io.getK(), io.getLambda()));
 		}
-
+		e.calculaCoste();
+		resultado.calculaCoste();
 		io.imprimeResultado(e.consultaCosteTotal(), e.consultaCostePrioridad1(),
 			resultado.consultaCosteTotal(), resultado.consultaCostePrioridad1());
 	}

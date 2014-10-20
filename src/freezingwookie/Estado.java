@@ -56,8 +56,8 @@ public class Estado {
 		int ini = 0;
 		for (int i = 0; i < centros.size(); ++i) {
 			Centro centro = centros.get(i);
+			helicopterosCentros.add(ini);
 			for (int j = 0; j < centro.getNHelicopteros(); ++j) {
-				helicopterosCentros.add(ini);
 				helicopteros.add(new Helicoptero());
 				++ini;
 			}
@@ -155,7 +155,7 @@ public class Estado {
 	 */
 	public void calculaCoste() {
 		double tmp1 = 0, tmp2 = 0;
-		costeTotal = costeP1 = -1;
+		costeTotal = costeP1 = 0;
 		for (int i = 0; i < centros.size(); ++i) {
 			Centro centro = centros.get(i);
 			for (int j = helicopterosCentros.get(i); j <
@@ -163,17 +163,12 @@ public class Estado {
 				Helicoptero h = helicopteros.get(j);
 				for (int k = 0; k < h.getNViajes(); ++k) {
 					ArrayList<Integer> viaje = h.getGruposViaje(k);
+					if (viaje.size() == 0) continue;
 					tmp1 += getCosteViaje(i, j, viaje);
-					if (contineGrupoP1(viaje)) tmp2 = tmp1;
+					if (contieneGrupoP1(viaje)) tmp2 = tmp1;
 				}
-				if (costeTotal == -1) {
-					costeTotal = tmp1;
-					costeP1 = tmp2;
-				}
-				else {
-					costeTotal += tmp1;
-					if (costeP1 < tmp2) costeP1 = tmp2;
-				}
+				costeTotal += tmp1;
+				if (costeP1 < tmp2) costeP1 = tmp2;
 			}
 		}
 	}
@@ -200,13 +195,13 @@ public class Estado {
 			Grupo grupo = grupos.get(viaje.get(i));
 			if (grupo.getPrioridad() == 1) mult = 2;
 			else mult = 1;
-			newx = centro.getCoordX();
-			newy = centro.getCoordY();
-			cost += (grupo.getNPersonas()*mult+distancia(newx,newy,oldx,oldy)*(100/60));
+			newx = grupo.getCoordX();
+			newy = grupo.getCoordY();
+			cost += (grupo.getNPersonas()*mult+distancia(newx,newy,oldx,oldy)*(60/100));
 			oldx = newx;
 			oldy = newy; 
 		}
-		return cost+distancia(x,y,oldx,oldy)*(100/60);
+		return cost+distancia(x,y,oldx,oldy)*(60/100);
 	}
 
 	private double distancia(int newx, int newy, int oldx, int oldy) {
@@ -218,7 +213,7 @@ public class Estado {
 	 * @param  v identificador del viaje
 	 * @return   devuelve si el viaje rescata a grupos de prioridad 1
 	 */
-	public boolean contineGrupoP1(ArrayList<Integer> viaje) {
+	public boolean contieneGrupoP1(ArrayList<Integer> viaje) {
 		for (int i = 0; i < viaje.size(); ++i) {
 			if (grupos.get(viaje.get(i)).getPrioridad() == 1) return true;
 		}

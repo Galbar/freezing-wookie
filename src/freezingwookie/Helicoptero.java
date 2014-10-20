@@ -30,7 +30,12 @@ class Viaje implements Cloneable{
 	}
 
 	public void remove (int i, int s) {
-		p.remove(new Integer(i));
+		for (int k = 0; k < p.size(); ++k) {
+			if (p.get(k).equals(i)) {
+				p.remove(k);
+				break;
+			}
+		}
 		this.s -= s;
 	}
 
