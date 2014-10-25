@@ -3,7 +3,7 @@ package freezingwookie;
 import java.io.Console;
 
 public class InputOutput {
-	Console console = System.console();
+	private Console console = System.console();
 
 	/**
 	 * Comprueba si la entrada del menu es correcta
