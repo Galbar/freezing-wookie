@@ -44,10 +44,12 @@ public class Estado {
 	 */
 	private ArrayList<Integer> helicopterosCentros;
 
+	private int seed;
+
 	/**
 	* Constructor
 	*/
-	public Estado(Centros c, Grupos g, int solIni) {
+	public Estado(Centros c, Grupos g, int solIni, int seed) {
 		centros = c;
 		grupos = g;
 
@@ -62,6 +64,8 @@ public class Estado {
 				++ini;
 			}
 		}
+		InputOutput io = new InputOutput();
+		this.seed = seed;
 		if (solIni == 0) solucionInicialDistribuido();
 		else solucionInicialRandom();
 	}
@@ -77,6 +81,7 @@ public class Estado {
 		helicopterosCentros = e.helicopterosCentros;
 		costeTotal = e.consultaCosteTotal();
 		costeP1 = e.consultaCostePrioridad1();
+		seed = e.seed;
 	}
 
 	/**
@@ -224,9 +229,7 @@ public class Estado {
      * Asigna al estado actual una solucion inicial random
      */
     public void solucionInicialRandom() {
-		Console console = System.console();
-    	InputOutput io = new InputOutput();
-    	Random myRandom = new Random(io.seed());
+    	Random myRandom = new Random(seed);
         for (int i = 0; i < grupos.size(); ++i) {
             int tmp = myRandom.nextInt(centros.size());
             helicopteros.get(helicopterosCentros.get(tmp)+
@@ -277,8 +280,7 @@ public class Estado {
 			}
 		}
 		// System.out.println("Asignar a centros los grupos que estén en su area");
-		InputOutput io = new InputOutput();
-    	Random random = new Random(io.seed());
+    	Random random = new Random(seed);
 		for (int i = 0; i < grupos.size(); ++i) {
 			Grupo grupo = grupos.get(i);
 			Point p = new Point(grupo.getCoordX(), grupo.getCoordY());

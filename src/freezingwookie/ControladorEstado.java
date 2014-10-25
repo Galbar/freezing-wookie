@@ -16,10 +16,12 @@ public class ControladorEstado {
 
 		InputOutput io = new InputOutput();
 
-		Centros cs = new Centros(io.nCentros(), io.nHelicopteros(), io.seed());
-		Grupos gs = new Grupos(io.nGrupos(), io.seed());
+		int seed = io.seed();
 
-		Estado e = new Estado(cs, gs, io.initOpt());
+		Centros cs = new Centros(io.nCentros(), io.nHelicopteros(),seed);
+		Grupos gs = new Grupos(io.nGrupos(), seed);
+
+		Estado e = new Estado(cs, gs, io.initOpt(), seed);
 
 		Solucionador sol = new Solucionador();
 		Estado resultado;
