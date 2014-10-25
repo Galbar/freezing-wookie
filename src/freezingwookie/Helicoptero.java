@@ -145,9 +145,14 @@ public class Helicoptero implements Cloneable {
 	 * @param  p Posición en la lista
 	 * @return   ID del grupo p (0 <= p < getNGrupos())
 	 */
-	public int getGrupo(int p) {
-		p = getPosicionReal(p);
+	public int getGrupo(int p, boolean realValues) {
+		if (!realValues)
+			p = getPosicionReal(p);
 		return gruposAsignados.get(p);
+	}
+
+	public int getGrupo(int p) {
+		return getGrupo(p, false);
 	}
 
 	/**
@@ -174,6 +179,26 @@ public class Helicoptero implements Cloneable {
 		Viaje tmp = viajes.get(v1);
 		viajes.set(v1, viajes.get(v2));
 		viajes.set(v2, tmp);
+	}
+
+	/**
+	 * Intercambia el grupo p1 del viaje v1 por el grupo p2 del viaje v2
+	 * y viceversa
+	 * @param p1 posicion de grupo en viaje v1
+	 * @param coste1 numero de personas en p1
+	 * @param p2 posicion de grupo en v2
+	 * @param coste2 numero de personas en p2
+	 */
+	public void intercambiarGruposViajes(int v1, int p1, int coste1,
+								    	 int v2, int p2, int coste2) {
+		p1 = viajes.get(v1).getGrupo(p1);
+		p2 = viajes.get(v2).getGrupo(p2);
+		int g1 = gruposAsignados.get(p1);
+		int g2 = gruposAsignados.get(p2);
+		viajes.get(gruposViajes.get(p1)).update(coste1,coste2);
+		viajes.get(gruposViajes.get(p2)).update(coste2,coste1);
+		gruposAsignados.set(p1,g2);
+		gruposAsignados.set(p2,g1);
 	}
 
 	/**
@@ -225,6 +250,15 @@ public class Helicoptero implements Cloneable {
 		return ret;
 	}
 
+	public ArrayList<Integer> getViaje(int v) {
+		ArrayList<Integer> ret = new ArrayList<Integer>();
+		Viaje viaje = viajes.get(v);
+		for (int i = 0; i < viaje.size(); ++i) {
+			ret.add(viaje.getGrupo(i));
+		}
+		return ret;
+	}
+
 	/**
 	 * Devuleve el identificador del viaje en el que está el grupo
 	 * con posición p1 en gruposAsignados
@@ -244,5 +278,12 @@ public class Helicoptero implements Cloneable {
 	 */
 	public void intercambiarOrdenGrupos(int k, int o, int p) {
 		viajes.get(k).swap(o, p);
+	}
+
+	public int getPosicionIrreal(int p) {
+		int count = 0;
+		for (int i = 0; i < gruposInvalidos.size(); ++i)
+			if (gruposInvalidos.get(i) < p) count++;
+		return p-count;
 	}
 }
