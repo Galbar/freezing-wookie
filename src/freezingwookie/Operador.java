@@ -71,9 +71,6 @@ public class Operador implements SuccessorFunction{
 				}
 			}
 		}
-
-		// TODO: Intercambiar grupos entre los viajes de un helicóptero
-		// TODO: Intercambiar orden de grupos dentro de un viaje de un helicóptero
 		
 		// Intercambiar orden de los viajes de un helicóptero
 		for (int i = 0; i < e.getNHelicopteros(); ++i) {
@@ -90,6 +87,25 @@ public class Operador implements SuccessorFunction{
 						+ " que el viaje " + String.valueOf(j)
 						+ String.valueOf(i) + ".\n",
 						eTmp));
+				}
+			}
+		}
+
+		// Intercambiar del orden del los grupos de un viaje de un helicioptero
+		for (int i = 0; i < e.getNHelicopteros(); ++i) {
+			Helicoptero h = e.getCopiaHelicoptero(i);
+			for (int j = 0; j < h.getNViajes(); ++j) {
+				for (int k = 0; k < h.getNGruposViaje(j); ++k) {
+					for (int p = k; p < h.getNGruposViaje(j); ++p) {
+						h.intercambiarOrdenGrupos(j, k, p);
+						eTmp = new Estado(e);
+						eTmp.asignarHelicoptero(i, h);
+						ret.add(new Successor("Helicóptero "
+							+ String.valueOf(i) + " modifica el orden de los grupos en el viaje "
+							+ String.valueOf(k) + " el grupo en posicion " + String.valueOf(k)
+							+ " se intercambia con el grupo en posicion " + String.valueOf(p) + ".\n",
+							eTmp));
+					}
 				}
 			}
 		}

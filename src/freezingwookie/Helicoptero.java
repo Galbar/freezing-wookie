@@ -236,4 +236,13 @@ public class Helicoptero implements Cloneable {
 		return gruposViajes.get(p1);
 	}
 
+	/**
+	 * Intercambia el orden de los grupos en un viaje
+	 * @param k identificador del grupo
+	 * @param o posicion del primero grupo a intercambiar
+	 * @param p posicion del segundo grupo a intercambiar
+	 */
+	public void intercambiarOrdenGrupos(int k, int o, int p) {
+		viajes.get(k).swap(o, p);
+	}
 }
