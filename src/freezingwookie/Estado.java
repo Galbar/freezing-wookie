@@ -277,7 +277,8 @@ public class Estado {
 			}
 		}
 		// System.out.println("Asignar a centros los grupos que estén en su area");
-    	Random random = new Random();
+		InputOutput io = new InputOutput();
+    	Random random = new Random(io.seed());
 		for (int i = 0; i < grupos.size(); ++i) {
 			Grupo grupo = grupos.get(i);
 			Point p = new Point(grupo.getCoordX(), grupo.getCoordY());
