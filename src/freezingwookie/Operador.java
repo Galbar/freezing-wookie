@@ -17,7 +17,7 @@ public class Operador implements SuccessorFunction{
 		
 		Estado e = (Estado)eActual;
 		Estado eTmp;
-		
+
 		// Intercambiar grupos de helicópteros
 		for (int i = 0; i < e.getNHelicopteros(); ++i) {
 			int h1NGrupos = e.getHelicoptero(i).getNGrupos();
@@ -46,32 +46,6 @@ public class Operador implements SuccessorFunction{
 			}
 		}
 
-		// Asignar un grupo de un helicóptero a otro
-		for (int i = 0; i < e.getNHelicopteros(); ++i) {
-			int h1NGrupos = e.getHelicoptero(i).getNGrupos();
-			for (int j = i+1; j < e.getNHelicopteros(); ++j) {    // Helicópteros todos con todos
-				int h2NGrupos = e.getHelicoptero(j).getNGrupos();
-				for (int k = 0; k < h1NGrupos; ++k) {             // para todos sus grupos todos con todos
-					eTmp = new Estado(e);
-					Helicoptero h1 = eTmp.getCopiaHelicoptero(i);
-					Helicoptero h2 = eTmp.getCopiaHelicoptero(j);
-					int idGrupo = h1.getGrupo(k);
-					int coste = eTmp.grupos.get(idGrupo).getNPersonas();
-					h1.desasignarGrupo(k, coste);
-					h2.asignarGrupo(idGrupo, coste);
-					eTmp.asignarHelicoptero(i, h1);
-					eTmp.asignarHelicoptero(j, h2);
-					ret.add(new Successor("Helicóptero "
-						+ String.valueOf(i) + " ahora no rescata al grupo "
-						+ String.valueOf(idGrupo)
-						+ ". Helicóptero " + String.valueOf(j)
-						+ String.valueOf(i) + " ahora rescata al grupo "
-						+ String.valueOf(idGrupo) + ".\n",
-						eTmp));
-				}
-			}
-		}
-
 		// Intercambiar grupos entre los viajes de un helicóptero
 		for (int i = 0; i < e.getNHelicopteros(); ++i) {                         // i id del helicoptero
 			Helicoptero heli = e.getHelicoptero(i);                              // helicoptero con el que trabajamos
@@ -81,9 +55,9 @@ public class Operador implements SuccessorFunction{
 				for (int k = j+1; k < hNViajes; ++k) {                           // k id viaje2
 					ArrayList<Integer> viaje2 = heli.getViaje(k);
 					for (int l = 0; l < viaje1.size(); ++l) {                    // l id local (para viaje) de g1
-						int g1 = heli.getGrupo(viaje1.get(l), true);                               // g1 id global (para estado) de g1
+						int g1 = heli.getGrupo(viaje1.get(l));                               // g1 id global (para estado) de g1
 						for (int m = 0; m < viaje2.size(); ++m) {                // m id local (para viaje) de g2
-							int g2 = heli.getGrupo(viaje2.get(m), true);                           // g2 id global (para estado) de g2
+							int g2 = heli.getGrupo(viaje2.get(m));                           // g2 id global (para estado) de g2
 							if (e.intercambioPosible(i, heli.getPosicionIrreal(viaje1.get(l)),
 								i, heli.getPosicionIrreal(viaje2.get(m)))) {
 								eTmp = new Estado(e);

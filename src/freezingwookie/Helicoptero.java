@@ -61,14 +61,6 @@ public class Helicoptero implements Cloneable {
 	private ArrayList<Integer> gruposAsignados;
 	private ArrayList<Viaje> viajes;
 	private ArrayList<Integer> gruposViajes;
-	private ArrayList<Integer> gruposInvalidos;
-
-	private int getPosicionReal(int p) {
-		int count = 0;
-		for (int i = 0; i < gruposInvalidos.size(); ++i)
-			if (gruposInvalidos.get(i) < p) count++;
-		return p+count;
-	}
 
 	/**
 	 * Constructora
@@ -77,7 +69,6 @@ public class Helicoptero implements Cloneable {
 		gruposAsignados = new ArrayList<Integer>();
 		viajes = new ArrayList<Viaje>();
 		gruposViajes = new ArrayList<Integer>();
-		gruposInvalidos = new ArrayList<Integer>();
 	}
 
 	/**
@@ -86,11 +77,11 @@ public class Helicoptero implements Cloneable {
 	public Helicoptero clone() {
 		Helicoptero h = new Helicoptero();
 		h.gruposAsignados = new ArrayList<Integer>(gruposAsignados);
+		h.viajes = new ArrayList<Viaje>();
 		for (int i = 0; i < viajes.size(); ++i) {
 			h.viajes.add(viajes.get(i).clone());
 		}
 		h.gruposViajes = new ArrayList<Integer>(gruposViajes);
-		h.gruposInvalidos = new ArrayList<Integer>(gruposInvalidos);
 		return h;
 	}
 
@@ -106,18 +97,9 @@ public class Helicoptero implements Cloneable {
 				viajes.add(new Viaje());
 			}
 			Viaje viaje = viajes.get(viajes.size()-1);
-			if (gruposInvalidos.size() > 0) {
-				int i = gruposInvalidos.get(0);
-				gruposInvalidos.remove(0);
-				gruposAsignados.set(i, g);
-				viaje.add(i, s);
-				gruposViajes.set(i, viajes.size()-1);
-			}
-			else {
-				gruposAsignados.add(g);
-				viaje.add(getNGrupos()-1, s);
-				gruposViajes.add(viajes.size()-1);
-			}
+			gruposAsignados.add(g);
+			viaje.add(getNGrupos()-1, s);
+			gruposViajes.add(viajes.size()-1);
 		} else {
 			Viaje tmp = new Viaje();
 			gruposAsignados.add(g);
@@ -128,31 +110,13 @@ public class Helicoptero implements Cloneable {
 	}
 
 	/**
-	 * Quita un grupo de los grupos asignados del helicóptero
-	 * @param p Posición en la lista
-	 * @param s numero de personas en el grupo
-	 */
-	public void desasignarGrupo(int p, int s) {
-		p = getPosicionReal(p);
-		gruposInvalidos.add(p);
-		Viaje viaje = viajes.get(gruposViajes.get(p));
-		viaje.remove(p, s);
-	}
-
-	/**
 	 * Devuelve el ID del grupo asignado que está en la posición p de 
 	 * gruposAsignados
 	 * @param  p Posición en la lista
 	 * @return   ID del grupo p (0 <= p < getNGrupos())
 	 */
-	public int getGrupo(int p, boolean realValues) {
-		if (!realValues)
-			p = getPosicionReal(p);
-		return gruposAsignados.get(p);
-	}
-
 	public int getGrupo(int p) {
-		return getGrupo(p, false);
+		return gruposAsignados.get(p);
 	}
 
 	/**
@@ -165,8 +129,6 @@ public class Helicoptero implements Cloneable {
 	
 	public void intercambiarGrupos(int p1, int coste1, Helicoptero h,
 								   int coste2, int p2) {
-		p1 = getPosicionReal(p1);
-		p2 = h.getPosicionReal(p2);
 		int g1 = gruposAsignados.get(p1);
 		int g2 = h.gruposAsignados.get(p2);
 		viajes.get(gruposViajes.get(p1)).update(coste1,coste2);
@@ -206,7 +168,7 @@ public class Helicoptero implements Cloneable {
 	 * @return Número de grupos asignados
 	 */
 	public int getNGrupos() {
-		return gruposAsignados.size() - gruposInvalidos.size();
+		return gruposAsignados.size();
 	}
 
 	/**
@@ -244,8 +206,7 @@ public class Helicoptero implements Cloneable {
 		ArrayList<Integer> ret = new ArrayList<Integer>();
 		Viaje viaje = viajes.get(v);
 		for (int i = 0; i < viaje.size(); ++i) {
-			ret.add(gruposAsignados.get(
-				viaje.getGrupo(i)));
+			ret.add(gruposAsignados.get(viaje.getGrupo(i)));
 		}
 		return ret;
 	}
@@ -266,7 +227,6 @@ public class Helicoptero implements Cloneable {
 	 * @return   identificador del viaje
 	 */
 	public int getViajeGrupo(int p1) {
-		p1 = getPosicionReal(p1);
 		return gruposViajes.get(p1);
 	}
 
@@ -282,8 +242,6 @@ public class Helicoptero implements Cloneable {
 
 	public int getPosicionIrreal(int p) {
 		int count = 0;
-		for (int i = 0; i < gruposInvalidos.size(); ++i)
-			if (gruposInvalidos.get(i) < p) count++;
-		return p-count;
+		return p;
 	}
 }
